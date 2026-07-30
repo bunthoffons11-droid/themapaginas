@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thema 4 — Groei &amp; merk · PakketPanda &amp; ASH</title>
+<style>
+:root{
+  --bg:#f3f0ea; --card:#ffffff; --header:#17181a;
+  --text:#22242a; --muted:#6f737b; --ondark:#f7f5f1;
+  --panda:#1c1e21; --steel:#4a4f57; --ember:#e2611b; --corten:#9a4a26;
+  --pos:#c9520f; --risk:#a33d22; --warn:#8a5416; --star:#e8a020;
+  --kruip:#26282c; --loop:#9a4a26; --ren:#e2611b;
+  --gap:16px; --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:var(--gap)}
+.demo-banner{background:#fdf2e6;border:1px solid #f0d4b2;color:var(--warn);border-radius:var(--radius);padding:8px 16px;font-size:13px;margin-bottom:var(--gap)}
+
+header.top{background:radial-gradient(circle at 90% 130%,rgba(226,97,27,.30),transparent 52%),radial-gradient(circle at 72% 160%,rgba(154,74,38,.22),transparent 45%),var(--header);color:var(--ondark);padding:20px 24px;border-radius:var(--radius);margin-bottom:var(--gap);position:relative;overflow:hidden;border-bottom:3px solid var(--ember)}
+.crumb{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9aa0a8;font-weight:600;margin-bottom:6px}
+header.top h1{font-size:24px;font-weight:800;line-height:1.25;letter-spacing:-.3px}
+header.top .sub{font-size:14px;color:#a9aeb6;margin-top:6px;max-width:760px}
+.duomark{position:absolute;top:20px;right:22px;display:flex;align-items:center;gap:9px;opacity:.92}
+.duomark .x{color:#7a7f87;font-size:13px;font-weight:600}
+.themes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.theme-chip{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#a9aeb6;background:rgba(255,255,255,.05);white-space:nowrap}
+.theme-chip.active{background:var(--ember);border-color:var(--ember);color:#fff;font-weight:600}
+a.theme-chip{text-decoration:none;color:#a9aeb6;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+a.theme-chip:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.42);color:#fff}
+
+.systems{background:var(--card);border-radius:var(--radius);padding:14px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);margin-bottom:var(--gap);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.systems .lock{flex:none;width:34px;height:34px;border-radius:9px;background:#eceef0;display:flex;align-items:center;justify-content:center}
+.systems .txt{font-size:13.5px;min-width:220px;flex:1}
+.systems .txt b{font-weight:650}
+.sysbadges{display:flex;gap:8px;flex-wrap:wrap}
+.sysbadge{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:8px;background:#f0f1f3;border:1px solid #e2e4e8;color:#3c4046;white-space:nowrap}
+
+.vs-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:6px 4px 10px}
+.vs-head h2{font-size:17px;font-weight:750}
+.vs-head .hint{font-size:12.5px;color:var(--muted)}
+.replay{font-size:12.5px;font-weight:600;color:var(--pos);background:none;border:1px solid var(--ember);border-radius:99px;padding:4px 14px;cursor:pointer}
+.replay:hover{background:var(--ember);color:#fff}
+.vs{display:grid;grid-template-columns:1fr 108px 1fr;gap:0;align-items:stretch;margin-bottom:var(--gap)}
+.pane{background:var(--card);border-radius:var(--radius);padding:18px 20px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);position:relative;overflow:hidden}
+.pane.now{border-top:4px solid var(--steel)}
+.pane.next{border-top:4px solid var(--ember)}
+.pane .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:4px}
+.pane.now .tag{background:#eceef0;color:var(--steel)}
+.pane.next .tag{background:#fbe9dc;color:var(--pos)}
+.pane h3{font-size:15.5px;font-weight:750;margin-bottom:2px}
+.pane .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 10px;border-radius:8px;opacity:.35;transform:translateX(-6px);transition:opacity .5s ease,transform .5s ease,background .3s}
+.step.on{opacity:1;transform:none}
+.step .n{flex:none;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pane.now .step .n{background:#eceef0;color:#3d4148}
+.pane.next .step .n{background:#fbe9dc;color:var(--pos)}
+.step .b{font-size:13.5px}
+.step .b b{font-weight:650}
+.step .b .risk{display:inline-block;font-size:11px;font-weight:600;color:var(--risk);background:#f7e7e0;border-radius:99px;padding:1px 9px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.connector{width:2px;height:14px;background:#e6e3dd;margin-left:22px}
+.autos{margin:10px 0 0 38px;display:flex;flex-direction:column;gap:6px}
+.auto{font-size:13px;color:#3f3a35;display:flex;gap:8px;align-items:flex-start;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease}
+.auto.on{opacity:1;transform:none}
+.auto .chk{flex:none;width:17px;height:17px;border-radius:50%;background:var(--ember);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px;font-weight:700;box-shadow:0 0 7px rgba(226,97,27,.45)}
+.auto .who{color:var(--muted);font-size:11.5px}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.mid .count{font-size:22px;font-weight:800;line-height:1.05;white-space:nowrap;text-align:center}
+.mid .count .from{color:var(--steel)}
+.mid .count .to{color:var(--pos)}
+.mid .arrow{font-size:22px;color:var(--ember);text-shadow:0 0 10px rgba(226,97,27,.35)}
+@keyframes pulse{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.mid.play .arrow{animation:pulse 1s ease infinite}
+.mid .lbl{font-size:11px;color:var(--muted);text-align:center;line-height:1.3}
+.paylines{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed #e6e3dd}
+.pay{font-size:12.5px}
+.pay .v{font-size:19px;font-weight:800}
+.pane.now .pay .v{color:#3f444b}
+.pane.next .pay .v{color:var(--pos)}
+.pay .k{color:var(--muted)}
+.teller{margin-top:16px;background:#fbf2e9;border:1px solid #efd9c2;border-radius:8px;padding:12px 14px;opacity:0;transform:translateY(6px);transition:opacity .5s ease .1s,transform .5s ease .1s}
+.teller.on{opacity:1;transform:none}
+.teller .t{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:8px}
+.tellerrow{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:6px}
+.tellerrow:last-child{margin-bottom:0}
+.tellerrow .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--corten),var(--ember));flex:none;transition:width .8s ease}
+.tellerrow.dim .bar{background:#ddb28d}
+.tellerrow .cnt{font-weight:700;flex:none;width:34px;text-align:right}
+.teller .insight{font-size:12.5px;color:#4a3f34;margin-top:9px;border-top:1px dashed #ecd3ba;padding-top:8px}
+.teller .insight b{font-weight:650}
+
+.ladder-head{margin:26px 4px 4px}
+.ladder-head h2{font-size:17px;font-weight:750}
+.ladder-head p{font-size:13.5px;color:var(--muted);max-width:820px;margin-top:3px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);align-items:end;margin-top:14px;margin-bottom:var(--gap)}
+.tread{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(28,22,14,.08);cursor:pointer;border:2px solid transparent;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden;display:flex;flex-direction:column}
+.tread:hover{transform:translateY(-3px);box-shadow:0 4px 14px rgba(28,22,14,.12)}
+.tread.open{border-color:currentColor}
+.tread.open:hover{transform:none}
+.tread .bar{height:5px}
+.tread[data-lvl="kruip"]{color:var(--kruip)} .tread[data-lvl="kruip"] .bar{background:var(--kruip)}
+.tread[data-lvl="loop"]{color:var(--loop)} .tread[data-lvl="loop"] .bar{background:var(--loop)}
+.tread[data-lvl="ren"]{color:var(--ren)} .tread[data-lvl="ren"] .bar{background:linear-gradient(90deg,var(--corten),var(--ember))}
+.tread .inner{padding:14px 16px 16px;color:var(--text)}
+.lvl{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;padding:2px 9px;border-radius:99px;margin-bottom:8px;color:#fff}
+.tread[data-lvl="kruip"] .lvl{background:var(--kruip)}
+.tread[data-lvl="loop"] .lvl{background:var(--loop)}
+.tread[data-lvl="ren"] .lvl{background:var(--ren)}
+.tread h4{font-size:14.5px;font-weight:750;line-height:1.3;margin-bottom:4px}
+.tread .oneliner{font-size:12.5px;color:var(--muted)}
+.tread .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pill{font-size:11px;font-weight:600;background:#f2f0ec;border-radius:99px;padding:2px 9px;color:#55585f;white-space:nowrap}
+.tread .more{font-size:11.5px;font-weight:600;margin-top:10px;color:currentColor}
+.tread .detail{display:none;border-top:1px solid #efece6;margin-top:12px;padding-top:12px;color:var(--text);cursor:auto}
+.tread.open .detail{display:block}
+.detail h5{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.detail h5:first-child{margin-top:0}
+.detail p,.detail li{font-size:12.5px}
+.detail ul{list-style:none}
+.detail li{padding-left:16px;position:relative;margin-bottom:3px}
+.detail li:before{content:"›";position:absolute;left:2px;color:currentColor;font-weight:700}
+@media(min-width:861px){
+  .ladder .tread:nth-child(1){margin-top:96px}
+  .ladder .tread:nth-child(2){margin-top:64px}
+  .ladder .tread:nth-child(3){margin-top:32px}
+  .ladder .tread:nth-child(4){margin-top:0}
+  .ladder{align-items:start}
+}
+.ladder .tread.open{grid-column:1 / -1}
+@media(min-width:861px){.ladder .tread.open{margin-top:0}}
+
+.demo{margin-top:14px;background:#f8f6f1;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px;cursor:auto}
+.demo-tag{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#fff;background:var(--panda);padding:4px 12px;border-radius:99px;margin-bottom:11px}
+.demo-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 6px rgba(226,97,27,.8);animation:blink 1.6s ease infinite}
+@keyframes blink{50%{opacity:.35}}
+.demo .dhint{font-size:12px;color:var(--muted);margin:-6px 0 10px}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.btn-go{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--corten),var(--ember));border:none;border-radius:8px;padding:9px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(226,97,27,.3);font-family:inherit}
+.btn-go:hover{filter:brightness(1.08)}
+.demo select{margin-top:3px;padding:7px 9px;font-size:13px;border:1px solid #d9d4c9;border-radius:7px;background:#fff;color:var(--text);font-family:inherit;cursor:pointer}
+.demo label{display:block;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.stars{color:var(--star);letter-spacing:1px}
+.stars .off{color:#dcd6c8}
+
+/* demo1 — review-motor */
+.t4d1-time{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:10px 12px;margin-bottom:11px;font-size:11.5px}
+.t4d1-time .node{display:flex;flex-direction:column;align-items:center;gap:3px;color:#4a463f;text-align:center;min-width:78px}
+.t4d1-time .node .d{width:11px;height:11px;border-radius:50%;background:var(--ember)}
+.t4d1-time .node .d.grey{background:#c9c3b5}
+.t4d1-time .ln{flex:1;height:2px;background:#e2ddd2;min-width:14px}
+.t4d1-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.revbtn{font-size:12px;font-weight:650;border:1.5px solid #e2ddd2;background:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit}
+.revbtn.act{border-color:var(--ember);box-shadow:0 2px 10px rgba(226,97,27,.16)}
+.revcard{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:12px 13px}
+.revcard .rev{font-size:12px;font-style:italic;color:#4a463f;background:#f6f4ef;border-left:3px solid #d9d4c9;border-radius:0 7px 7px 0;padding:7px 10px;margin:7px 0 9px}
+.revcard .cl{font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:5px}
+.revcard .concept{background:#fdf9f4;border:1px dashed #e8d9c6;border-radius:7px;padding:8px 11px;font-size:12px;line-height:1.55;color:#3f3a35}
+.wout-alert{background:#f7e0d6;border-left:3px solid var(--risk);border-radius:8px;padding:9px 11px;font-size:12px;line-height:1.5;color:#5c2a17;margin-top:9px}
+.wout-alert b{color:var(--risk)}
+
+/* demo2 — content-assistent */
+.t4d2-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:11px}
+.post{background:#fff;border:1px solid #e7e2d8;border-radius:11px;overflow:hidden;max-width:340px}
+.post .img{height:120px;background:linear-gradient(135deg,#26282c,#9a4a26,#e2611b);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;letter-spacing:.5px;text-align:center;padding:10px}
+.post .cap{padding:11px 13px;font-size:12.5px;line-height:1.55}
+.post .tags{padding:0 13px 12px;font-size:11.5px;color:#2a4a8a;font-weight:600}
+.calslot{display:inline-block;font-size:11px;font-weight:700;background:#eef0f2;color:var(--steel);border-radius:7px;padding:4px 10px;margin-top:10px}
+.t4d2-note{font-size:11.5px;color:var(--muted);margin-top:10px}
+
+/* demo3 — marktplaats-listings */
+.t4d3-tabs{display:inline-flex;background:#eceae3;border-radius:99px;padding:3px;margin-bottom:6px}
+.t4d3-tabs button{font-size:12px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:99px;padding:5px 14px;cursor:pointer;font-family:inherit}
+.t4d3-tabs button.act{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(28,22,14,.18)}
+.langs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 11px}
+.langbtn{font-size:11px;font-weight:700;border:1px solid #e2ddd2;background:#fff;border-radius:7px;padding:4px 10px;cursor:pointer;font-family:inherit}
+.langbtn.act{border-color:var(--ember);color:var(--pos);background:#fbe9dc}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bacol{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 12px}
+.bacol.before{border-left:3px solid var(--steel)}
+.bacol.after{border-left:3px solid var(--ember)}
+.bacol .bl{font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.bacol.before .bl{color:var(--steel)}.bacol.after .bl{color:var(--pos)}
+.bacol .ti{font-size:12.5px;font-weight:700;line-height:1.35;margin-bottom:6px}
+.bacol .specs{font-size:11.5px;color:#4a463f;line-height:1.5}
+.bacol .miss{color:var(--risk)}
+
+/* demo4 — funnels + cross-sell + seo */
+.t4d4-toggle{display:inline-flex;background:#eceae3;border-radius:99px;padding:3px;margin-bottom:10px}
+.t4d4-toggle button{font-size:12px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:99px;padding:5px 14px;cursor:pointer;font-family:inherit}
+.t4d4-toggle button.act{background:var(--ember);color:#fff}
+.mailmock{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:12px 14px;max-width:440px}
+.mailmock .mm-sub{font-size:12.5px;font-weight:750;margin-bottom:6px}
+.mailmock .mm-body{font-size:12px;line-height:1.55;color:#3f3a35}
+.mm-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:99px;padding:2px 9px;margin-bottom:8px}
+.mm-tag.gen{background:#eceef0;color:var(--steel)}
+.mm-tag.smart{background:#fbe9dc;color:var(--pos)}
+.t4d4-cols{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:12px}
+.miniblock{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 12px}
+.miniblock h6{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.xsell{display:flex;align-items:center;gap:8px;font-size:12px;background:#f8f6f1;border-radius:8px;padding:8px 10px}
+.xsell .ar{color:var(--ember);font-weight:800}
+.seoli{list-style:none}
+.seoli li{font-size:11.5px;padding:5px 0 5px 16px;position:relative;border-bottom:1px solid #f0ece2}
+.seoli li:last-child{border-bottom:none}
+.seoli li:before{content:"✎";position:absolute;left:0;color:var(--ember)}
+.seoli .gap{color:var(--risk);font-size:10px;font-weight:700}
+
+.d-note{font-size:11.5px;color:var(--muted);margin-top:11px;border-top:1px dashed #e0dbd0;padding-top:9px}
+.d-note b{color:var(--text);font-weight:650}
+.note{background:var(--card);border-radius:var(--radius);padding:13px 18px;box-shadow:0 1px 3px rgba(28,22,14,.08);font-size:13px;color:var(--muted);margin-bottom:var(--gap);border-left:3px solid var(--ember)}
+.note b{color:var(--text);font-weight:650}
+footer{color:var(--muted);font-size:12px;padding:4px 4px 22px}
+
+@media(max-width:860px){
+  .vs{grid-template-columns:1fr}
+  .mid{flex-direction:row;padding:10px 0;gap:12px}
+  .mid .arrow{transform:rotate(90deg)}
+  .ladder{grid-template-columns:1fr}
+  header.top h1{font-size:20px}
+  .ba{grid-template-columns:1fr}
+  .t4d4-cols{grid-template-columns:1fr}
+}
+@media(max-width:560px){ .duomark{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="demo-banner"><b>Schetsversie</b> — reviews, posts en cijfers zijn illustratief. De 133 reviews à 4,94 van PakketPanda zijn echt; de rest toont hoe de motor zou draaien op Wouts eigen data.</div>
+
+  <header class="top">
+    <div class="duomark" aria-hidden="true">
+      <svg width="26" height="24" viewBox="0 0 26 24">
+        <circle cx="6" cy="5" r="4" fill="#0e0f10"/><circle cx="20" cy="5" r="4" fill="#0e0f10"/>
+        <circle cx="13" cy="13" r="10" fill="#f7f5f1"/>
+        <ellipse cx="9" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(-15 9 12)"/>
+        <ellipse cx="17" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(15 17 12)"/>
+        <circle cx="13" cy="16.5" r="1.4" fill="#0e0f10"/>
+      </svg>
+      <span class="x">×</span>
+      <svg width="19" height="23" viewBox="0 0 20 24">
+        <path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#e2611b"/>
+        <path d="M10 22.6a3.4 3.4 0 0 0 3.4-3.4c0-2.1-1.9-3.1-3.4-5.2-1.5 2.1-3.4 3.1-3.4 5.2a3.4 3.4 0 0 0 3.4 3.4z" fill="#f7b26b"/>
+      </svg>
+    </div>
+    <div class="crumb">PakketPanda &amp; ASH Grill &amp; Heat · Thema 4 van 7</div>
+    <h1>Groei &amp; merk</h1>
+    <div class="sub">Niet repareren, maar versterken: de dingen die al werken (reviews, funnels, seizoensacties) systematisch maken, en de kansen pakken die nu blijven liggen door tijdgebrek.</div>
+    <div class="themes">
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%201%20visueel%20(bestelling%20tot%20deurmat).html">1 · Bestelling tot deurmat</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%202%20visueel%20(klantcontact).html">2 · Klantcontact</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%203%20visueel%20(bedrijfsgeheugen).html">3 · Bedrijfsgeheugen</a>
+      <span class="theme-chip active">4 · Groei &amp; merk</span>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%205%20visueel%20(sturing%20en%20signalen).html">5 · Sturing &amp; signalen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%206%20visueel%20(geld%20marge%20en%20cashflow).html">6 · Geld, marge &amp; cashflow</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%207%20visueel%20(leveranciers%20en%20contracten).html">7 · Leveranciers &amp; contracten</a>
+    </div>
+  </header>
+
+  <div class="systems">
+    <div class="lock" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23252a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <div class="txt"><b>Wat al draait blijft draaien.</b> FunnelKit, Tidio en de seizoenscampagnes blijven staan — de motor versterkt ze, vervangt ze niet.</div>
+    <div class="sysbadges">
+      <span class="sysbadge">FunnelKit</span>
+      <span class="sysbadge">Reviews (site)</span>
+      <span class="sysbadge">Bol · Amazon · Praxis · Brico</span>
+      <span class="sysbadge">Insta / social</span>
+    </div>
+  </div>
+
+  <div class="vs-head">
+    <h2>Reviews zijn het sterkste wapen — maar ze verzamelen is handwerk</h2>
+    <span class="hint">4,94 uit 133 reviews · en dat kan vanzelf doorgroeien</span>
+    <button class="replay" onclick="playAnim()">↺ Speel opnieuw af</button>
+  </div>
+
+  <section class="vs">
+    <div class="pane now">
+      <span class="tag">Status quo</span>
+      <h3>Kansen blijven liggen — geen tijd</h3>
+      <div class="sub">Reviews vragen en beantwoorden gebeurt als iemand eraan denkt.</div>
+      <div class="steps" id="now-steps">
+        <div class="step"><span class="n">1</span><div class="b"><b>Reviewverzoek?</b> Alleen als iemand eraan denkt. <span class="risk">vaak niet</span></div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">2</span><div class="b"><b>Reactie op een review</b> — met de hand, soms dagen later, soms niet.</div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">3</span><div class="b"><b>ASH loopt achter</b> op reviews t.o.v. PakketPanda — niemand haalt in.</div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">?%</div><div class="k">van de leveringen krijgt een reviewverzoek</div></div>
+        <div class="pay"><div class="v">handwerk</div><div class="k">reageren en opvolgen kost tijd die er niet is</div></div>
+        <div class="pay"><div class="v">1 merk</div><div class="k">alleen PakketPanda plukt de vruchten</div></div>
+      </div>
+    </div>
+
+    <div class="mid" id="mid">
+      <div class="count"><span class="from">0%</span> <span style="color:var(--muted);font-size:16px">→</span> <span class="to">100%</span></div>
+      <div class="arrow">➜</div>
+      <div class="lbl">van "als we eraan denken"<br>naar elke levering<br>een reviewverzoek</div>
+    </div>
+
+    <div class="pane next">
+      <span class="tag">Straks</span>
+      <h3>De review-motor draait vanzelf</h3>
+      <div class="sub">Getimed, persoonlijk, en met een reactie binnen het uur.</div>
+      <div class="steps">
+        <div class="step" id="next-step1"><span class="n">1</span><div class="b"><b>Een paar dagen na levering</b> (ná de track &amp; trace-bevestiging) gaat automatisch een warm reviewverzoek uit.</div></div>
+      </div>
+      <div class="autos" id="autos">
+        <div class="auto"><span class="chk">✓</span><div>Review binnen? <b>Conceptreactie klaar binnen een uur</b> — goed of slecht <span class="who">· review-motor</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Negatieve review? <b>Direct seintje naar Wout</b> mét voorgestelde oplossing <span class="who">· review-motor</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Zelfde motor voor ASH — dat merk kan inlopen op PakketPanda <span class="who">· review-motor</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Frequentie bewaakt: nooit twee berichten in dezelfde week <span class="who">· review-motor</span></div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">100%</div><div class="k">leveringen krijgen een verzoek</div></div>
+        <div class="pay"><div class="v">&lt;1 uur</div><div class="k">reactie op elke review</div></div>
+        <div class="pay"><div class="v">2 merken</div><div class="k">PakketPanda én ASH groeien mee</div></div>
+      </div>
+      <div class="teller" id="teller">
+        <div class="t">Reviewvolume groeit vanzelf (voorbeeld, 3 maanden)</div>
+        <div class="tellerrow"><span class="cnt">133</span><span class="bar" style="width:0" data-w="45%"></span><span>nu — PakketPanda</span></div>
+        <div class="tellerrow"><span class="cnt">210</span><span class="bar" style="width:0" data-w="72%"></span><span>na 3 maanden — PakketPanda</span></div>
+        <div class="tellerrow dim"><span class="cnt">+58</span><span class="bar" style="width:0" data-w="30%"></span><span>ASH haalt in — zelfde motor</span></div>
+        <div class="insight"><b>Waarom dit telt:</b> reviews zijn hier aantoonbaar de conversie-motor. Meer reviews met minder moeite betekent direct meer vertrouwen op de productpagina — zonder dat iemand eraan hoeft te denken.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ladder-head">
+    <h2>De ladder — klein beginnen, opbouwen wat werkt</h2>
+    <p>Van kruipen via lopen naar rennen. Alles bouwt voort op wat al draait; FunnelKit en Tidio blijven gewoon staan. <b>Klik op een trede</b> voor wat het doet, wat ervoor nodig is, de bouwtijd — én een klikbare mini-demo.</p>
+  </div>
+
+  <section class="ladder">
+
+    <!-- TREDE 1 — review-motor -->
+    <div class="tread" data-lvl="kruip" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Kruipen</span>
+        <h4>De review-motor</h4>
+        <div class="oneliner">Automatisch reviewverzoek na levering, conceptreactie binnen een uur.</div>
+        <div class="meta"><span class="pill">±0,5–1 sprint</span><span class="pill">bewezen merk eerst</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Een paar dagen na levering krijgt elke klant automatisch een vriendelijk, persoonlijk reviewverzoek — getimed ná de bevestiging dat het pakket er echt is. Komt er een review binnen, goed of slecht, dan staat er binnen een uur een passend conceptantwoord klaar. Bij een negatieve review gaat er direct een seintje naar Wout, mét voorgestelde oplossing.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Leverdata als trigger (track &amp; trace-bevestiging)</li>
+            <li>De reviewkanalen op een rij (site, Google, evt. Bol/Trustpilot)</li>
+            <li>Akkoord op toon: tien voorbeeldantwoorden, Wout bepaalt de stijl</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5–1 sprint. Eerst voor PakketPanda (het bewezen merk), daarna kopiëren naar ASH.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Zo loopt het na een levering. Klik op een binnengekomen review — de motor zet meteen een reactie klaar. Bij de negatieve gaat er ook een seintje naar Wout.</p>
+            <div class="t4d1-time">
+              <div class="node"><span class="d grey"></span>Levering<small>dag 0</small></div>
+              <div class="ln"></div>
+              <div class="node"><span class="d"></span>Reviewverzoek<small>+3 dagen, auto</small></div>
+              <div class="ln"></div>
+              <div class="node"><span class="d"></span>Review binnen<small>reactie &lt;1u</small></div>
+            </div>
+            <div class="t4d1-btns">
+              <button class="revbtn act" id="rv-pos" onclick="t4d1Pick('pos')">★★★★★ 5-sterren binnen</button>
+              <button class="revbtn" id="rv-neg" onclick="t4d1Pick('neg')">★★☆☆☆ 2-sterren binnen</button>
+            </div>
+            <div class="revcard" id="t4d1-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 2 — content-assistent -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De content-assistent</h4>
+        <div class="oneliner">Voor je content-maker: copy, social-posts en captions — sneller en consistent.</div>
+        <div class="meta"><span class="pill">±1 sprint</span><span class="pill">versneller, geen vervanger</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Direct voor de parttime content-maker: productcopy, een social-/Insta-kalender, captions en het hergebruiken van sterke review-quotes als content — allemaal in een vaste huisstijl. Niet ter vervanging, maar als versneller: dezelfde persoon maakt in dezelfde tijd meer, en consistenter.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>De merk-tone per merk (PakketPanda vs ASH)</li>
+            <li>Een beeldbank / bestaande productfoto's</li>
+            <li>De review-quotes uit trede 1 als bron</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Kies een product of een review als vertrekpunt en genereer een kant-en-klare social-post — de content-maker hoeft alleen nog te finetunen.</p>
+            <div class="t4d2-row">
+              <label>Vertrekpunt
+                <select id="t4d2-src">
+                  <option value="solaris">Product: Solaris Ø81 plancha</option>
+                  <option value="classic">Product: Classic XXL brievenbus</option>
+                  <option value="review">Review-quote: "beste aankoop van de zomer"</option>
+                </select>
+              </label>
+              <button class="btn-go" onclick="t4d2Gen()">Genereer post</button>
+            </div>
+            <div id="t4d2-out"></div>
+            <div class="t4d2-note">De content-maker houdt de regie — dit levert alleen het startpunt in de juiste toon en huisstijl.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 3 — marktplaats-listings -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>Marktplaats-listings &amp; reviews</h4>
+        <div class="oneliner">Het werk dat nu op Wouts bord ligt: Bol/Amazon consistent en meertalig.</div>
+        <div class="meta"><span class="pill">±1 sprint</span><span class="pill">haalt werk van Wout weg</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Wout beheert nu zelf de listings én reviews op Bol, Amazon, Praxis en Brico — en dat is "toch wel wat werk". De assistent houdt titels, specs en copy consistent en meertalig, en zet reviewreacties dáár net zo netjes klaar als op de eigen shop. Wout keurt alleen nog goed.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Per marktplaats de listing-eisen</li>
+            <li>Toegang tot de marktplaats-accounts (Channable levert de productdata deels al)</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Kies een marktplaats en een taal. Links de huidige listing, rechts wat de assistent ervan maakt — compleet en consistent.</p>
+            <div class="t4d3-tabs">
+              <button class="act" id="mp-bol" onclick="t4d3Tab('bol')">Bol</button>
+              <button id="mp-amz" onclick="t4d3Tab('amz')">Amazon</button>
+            </div>
+            <div class="langs">
+              <button class="langbtn act" id="lg-nl" onclick="t4d3Lang('nl')">NL</button>
+              <button class="langbtn" id="lg-fr" onclick="t4d3Lang('fr')">FR</button>
+              <button class="langbtn" id="lg-de" onclick="t4d3Lang('de')">DE</button>
+              <button class="langbtn" id="lg-en" onclick="t4d3Lang('en')">EN</button>
+            </div>
+            <div class="ba">
+              <div class="bacol before">
+                <div class="bl">Nu</div>
+                <div class="ti">Pakketbrievenbus XXL zwart</div>
+                <div class="specs"><span class="miss">✗ geen maten · ✗ geen materiaal · ✗ geen USP's · alleen NL</span></div>
+              </div>
+              <div class="bacol after">
+                <div class="bl">Assistent</div>
+                <div class="ti" id="t4d3-ti"></div>
+                <div class="specs" id="t4d3-specs"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 4 — funnels + cross-sell + seo -->
+    <div class="tread" data-lvl="ren" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Rennen</span>
+        <h4>Meelerende funnels + cross-sell + SEO</h4>
+        <div class="oneliner">Mails die het échte bezwaar adresseren, een brug tussen de merken, en een contentlijst.</div>
+        <div class="meta"><span class="pill">±1–2 sprints</span><span class="pill">gevoed door thema 2</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>De FunnelKit-flows worden gevoed met wat thema 2 leert over échte klantvragen: de abandoned-cart-mail adresseert het werkelijke bezwaar in plaats van generiek te zijn. Een nette "van hetzelfde huis"-brug tussen de merken (vuurschaal-koper ↔ pakketbrievenbus). En een eenmalige vindbaarheidsslag: waar zoeken klanten op dat concurrenten wél en deze sites niet beantwoorden → een concrete top-lijst.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Toegang tot de FunnelKit-flows (om te lezen wat er nu staat)</li>
+            <li>De inzichten uit thema 2 (draait parallel — geen wachttijd)</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1–2 sprints.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Wissel tussen de generieke mail en de meelerende variant die het echte bezwaar uit thema 2 gebruikt. Daaronder: de merkenbrug en de vindbaarheidslijst.</p>
+            <div class="t4d4-toggle">
+              <button id="fk-gen" onclick="t4d4Set('gen')">Generieke mail</button>
+              <button class="act" id="fk-smart" onclick="t4d4Set('smart')">Meelerend (uit thema 2)</button>
+            </div>
+            <div class="mailmock" id="t4d4-mail"></div>
+            <div class="t4d4-cols">
+              <div class="miniblock">
+                <h6>Cross-sell-brug tussen de merken</h6>
+                <div class="xsell">🔥 Kocht een Solaris-vuurschaal <span class="ar">→</span> 📦 tip: pakketbrievenbus "van hetzelfde huis"</div>
+                <div style="height:7px"></div>
+                <div class="xsell">📦 Kocht een Classic XXL <span class="ar">→</span> 🔥 tip: vuurschaal voor op het terras</div>
+              </div>
+              <div class="miniblock">
+                <h6>Vindbaarheid — waar concurrenten wél op antwoorden</h6>
+                <ul class="seoli">
+                  <li>"pakketbrievenbus tegen pakketdieven" <span class="gap">· gat</span></li>
+                  <li>"welke vuurschaal voor koken én warmte" <span class="gap">· gat</span></li>
+                  <li>"pelletkachel terras hoeveel verbruik" <span class="gap">· gat</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="d-note"><b>Alles voortbouwend op wat er al draait:</b> geen vage "SEO-strategie", maar deze pagina's schrijven, deze mail aanpassen — klaar.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="note"><b>De rode draad:</b> meer reviews met minder moeite, mailflows die meeleren met echte klantvragen in plaats van gokken, een tweede omzetstroom uit bestaande klanten via de merkenbrug, en een eenmalige vindbaarheidsslag met blijvend effect.</div>
+
+  <footer>Thema 4 van 7 · gebouwd voor Wout · illustratieve voorbeelden, echte opzet · werkt volledig offline · FunnelKit, de reviewkanalen en de marktplaatsen blijven exact zoals ze zijn</footer>
+</div>
+
+<script>
+function toggle(card){
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.tread.open').forEach(t=>{
+    t.classList.remove('open');
+    t.querySelector('.more').textContent='Bekijk detail ▾';
+  });
+  if(!wasOpen){
+    card.classList.add('open');
+    card.querySelector('.more').textContent='Verberg detail ▴';
+  }
+}
+
+let animTimers=[];
+function playAnim(){
+  animTimers.forEach(clearTimeout); animTimers=[];
+  const nowSteps=document.querySelectorAll('#now-steps .step');
+  const autos=document.querySelectorAll('#autos .auto');
+  const step1=document.getElementById('next-step1');
+  const teller=document.getElementById('teller');
+  const mid=document.getElementById('mid');
+  nowSteps.forEach(s=>s.classList.remove('on'));
+  autos.forEach(a=>a.classList.remove('on'));
+  step1.classList.remove('on'); teller.classList.remove('on'); mid.classList.remove('play');
+  document.querySelectorAll('#teller .bar').forEach(b=>b.style.width='0');
+  let t=300;
+  nowSteps.forEach(s=>{animTimers.push(setTimeout(()=>s.classList.add('on'),t)); t+=550;});
+  animTimers.push(setTimeout(()=>mid.classList.add('play'),t)); t+=500;
+  animTimers.push(setTimeout(()=>step1.classList.add('on'),t)); t+=550;
+  autos.forEach(a=>{animTimers.push(setTimeout(()=>a.classList.add('on'),t)); t+=350;});
+  animTimers.push(setTimeout(()=>{
+    teller.classList.add('on');
+    document.querySelectorAll('#teller .bar').forEach(b=>b.style.width=b.dataset.w);
+  },t+250));
+}
+
+/* ============ demo 1 — review-motor ============ */
+const T4D1={
+  pos:{stars:'★★★★★',rev:'"Snel geleverd, ziet er prachtig uit en montage was zo gebeurd. Beste aankoop van de zomer!"',
+    cl:'Conceptreactie — klaar binnen een uur',
+    concept:'Wat fijn om te lezen, bedankt voor de vijf sterren! We wensen u heel veel plezier — en een mooie zomer op het terras. 🔥 Groet, team ASH',alert:false},
+  neg:{stars:'★★☆☆☆',rev:'"Pakket kwam met een deuk aan en het duurde even voor ik reactie kreeg. Jammer, want het product zelf is mooi."',
+    cl:'Conceptreactie — klaar binnen een uur',
+    concept:'Vervelend dat het pakket beschadigd aankwam en dat het antwoord op zich liet wachten — dat hoort niet. We sturen u vandaag nog een vervangend exemplaar en het retourlabel. Excuses, en bedankt dat u het meldde.',
+    alert:true,alertTxt:'<b>Seintje naar Wout:</b> negatieve review over transportschade + trage reactie. Voorgestelde oplossing: directe vervanging + retourlabel (concept staat klaar). Actie vóór de review langer blijft staan.'}
+};
+function t4d1Pick(k){
+  ['pos','neg'].forEach(id=>document.getElementById('rv-'+id).classList.toggle('act',id===k));
+  const d=T4D1[k];
+  let off=5-d.stars.length; // not used precisely; build stars
+  let html='<div class="stars">'+d.stars+'<span class="off">'+'★'.repeat(5-[...d.stars].filter(c=>c==='★').length)+'</span></div>'+
+    '<div class="rev">'+d.rev+'</div>'+
+    '<div class="cl">'+d.cl+'</div>'+
+    '<div class="concept">'+d.concept+'</div>';
+  if(d.alert) html+='<div class="wout-alert">'+d.alertTxt+'</div>';
+  document.getElementById('t4d1-card').innerHTML=html;
+}
+
+/* ============ demo 2 — content-assistent ============ */
+const T4D2={
+  solaris:{img:'Solaris Ø81',cap:'☀️ Bakken, grillen én genieten op je terras. De Solaris plancha verwarmt gelijkmatig en is zo schoongemaakt. Wie schuift er vanavond aan?',tags:'#planchagrill #buitenkoken #ASHgrillandheat #terrasleven',slot:'Insta · donderdag 18:00 (piek buitenkoken)'},
+  classic:{img:'Classic XXL',cap:'📦 Nooit meer thuisblijven voor een pakketje. De Classic XXL slikt zelfs de grote dozen — premium design, geen premium prijs. 🐼',tags:'#pakketbrievenbus #PakketPanda #slimwonen #bezorgd',slot:'Insta · dinsdag 12:00 (lunchscroll)'},
+  review:{img:'"Beste aankoop\\nvan de zomer"',cap:'Niets zegt meer dan een blije klant ⭐⭐⭐⭐⭐ "Beste aankoop van de zomer!" Dank je wel — daar doen we het voor. 🔥',tags:'#reviews #klantenvertellen #ASHgrillandheat',slot:'Insta · zaterdag 10:00 (weekend-inspiratie)'}
+};
+function t4d2Gen(){
+  const k=document.getElementById('t4d2-src').value;
+  const d=T4D2[k];
+  document.getElementById('t4d2-out').innerHTML=
+    '<div class="post" style="animation:fadein .4s ease"><div class="img">'+d.img.replace('\\n','<br>')+'</div>'+
+    '<div class="cap">'+d.cap+'</div><div class="tags">'+d.tags+'</div></div>'+
+    '<div><span class="calslot">📅 '+d.slot+'</span></div>';
+}
+
+/* ============ demo 3 — marktplaats-listings ============ */
+let t4d3T='bol', t4d3L='nl';
+const T4D3TITLE={
+  bol:{nl:'PakketPanda Classic XXL pakketbrievenbus — 34 cm, staal, cilinderslot, voorgemonteerd',
+       fr:'PakketPanda Classic XXL boîte à colis — 34 cm, acier, serrure à cylindre, prémonté',
+       de:'PakketPanda Classic XXL Paketbriefkasten — 34 cm, Stahl, Zylinderschloss, vormontiert',
+       en:'PakketPanda Classic XXL parcel box — 34 cm, steel, cylinder lock, pre-assembled'},
+  amz:{nl:'Pakketbrievenbus XXL — weerbestendig staal, 2 jaar garantie, voor alle bezorgdiensten | PakketPanda',
+       fr:'Boîte à colis XXL — acier résistant, 2 ans de garantie, tous transporteurs | PakketPanda',
+       de:'Paketbriefkasten XXL — wetterfester Stahl, 2 Jahre Garantie, alle Zusteller | PakketPanda',
+       en:'Parcel box XXL — weatherproof steel, 2-year warranty, all couriers | PakketPanda'}
+};
+const T4D3SPECS={
+  nl:'✓ 34 cm breed · ✓ poedercoat staal · ✓ cilinderslot + verankering · ✓ voorgemonteerd · ✓ 2 jaar garantie',
+  fr:'✓ 34 cm de large · ✓ acier thermolaqué · ✓ serrure + ancrage · ✓ prémonté · ✓ 2 ans de garantie',
+  de:'✓ 34 cm breit · ✓ pulverbeschichteter Stahl · ✓ Schloss + Verankerung · ✓ vormontiert · ✓ 2 Jahre Garantie',
+  en:'✓ 34 cm wide · ✓ powder-coated steel · ✓ lock + anchoring · ✓ pre-assembled · ✓ 2-year warranty'
+};
+function t4d3Tab(t){t4d3T=t;document.getElementById('mp-bol').classList.toggle('act',t==='bol');document.getElementById('mp-amz').classList.toggle('act',t==='amz');t4d3Render();}
+function t4d3Lang(l){t4d3L=l;['nl','fr','de','en'].forEach(x=>document.getElementById('lg-'+x).classList.toggle('act',x===l));t4d3Render();}
+function t4d3Render(){
+  document.getElementById('t4d3-ti').textContent=T4D3TITLE[t4d3T][t4d3L];
+  document.getElementById('t4d3-specs').textContent=T4D3SPECS[t4d3L];
+}
+
+/* ============ demo 4 — funnels + cross-sell + seo ============ */
+const T4D4={
+  gen:{tag:'Generiek',cls:'gen',sub:'Je vergat iets in je winkelwagen',
+    body:'Hoi! Er staat nog iets in je winkelwagen. Kom je het afronden? Hier is je link. — team PakketPanda'},
+  smart:{tag:'Meelerend — uit thema 2',cls:'smart',sub:'Twijfel je over de levertijd van de Aurora?',
+    body:'Hoi! Je bekeek de Aurora. De meestgestelde vraag hierover is de levertijd — dus die vast beantwoord: besteld vóór 21:00 = morgen in huis, rechtstreeks uit voorraad. Nog twijfels over maat of plaatsing? Eén reply en we helpen je. — team ASH'}
+};
+function t4d4Set(k){
+  document.getElementById('fk-gen').classList.toggle('act',k==='gen');
+  document.getElementById('fk-smart').classList.toggle('act',k==='smart');
+  const d=T4D4[k];
+  document.getElementById('t4d4-mail').innerHTML='<span class="mm-tag '+d.cls+'">'+d.tag+'</span><div class="mm-sub">'+d.sub+'</div><div class="mm-body">'+d.body+'</div>';
+}
+
+window.addEventListener('load',()=>{
+  setTimeout(playAnim,250);
+  t4d1Pick('pos');
+  t4d2Gen();
+  t4d3Render();
+  t4d4Set('smart');
+});
+</script>
+</body>
+</html>
