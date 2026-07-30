@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thema 7 — Leveranciers &amp; contracten · PakketPanda &amp; ASH</title>
+<style>
+:root{
+  --bg:#f3f0ea; --card:#ffffff; --header:#17181a;
+  --text:#22242a; --muted:#6f737b; --ondark:#f7f5f1;
+  --panda:#1c1e21; --steel:#4a4f57; --ember:#e2611b; --corten:#9a4a26;
+  --pos:#c9520f; --up:#2e7d43; --risk:#a33d22; --warn:#8a5416;
+  --kruip:#26282c; --loop:#9a4a26; --ren:#e2611b;
+  --gap:16px; --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:var(--gap)}
+.demo-banner{background:#fdf2e6;border:1px solid #f0d4b2;color:var(--warn);border-radius:var(--radius);padding:8px 16px;font-size:13px;margin-bottom:var(--gap)}
+
+header.top{background:radial-gradient(circle at 90% 130%,rgba(226,97,27,.30),transparent 52%),radial-gradient(circle at 72% 160%,rgba(154,74,38,.22),transparent 45%),var(--header);color:var(--ondark);padding:20px 24px;border-radius:var(--radius);margin-bottom:var(--gap);position:relative;overflow:hidden;border-bottom:3px solid var(--ember)}
+.crumb{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9aa0a8;font-weight:600;margin-bottom:6px}
+header.top h1{font-size:24px;font-weight:800;line-height:1.25;letter-spacing:-.3px}
+header.top .sub{font-size:14px;color:#a9aeb6;margin-top:6px;max-width:760px}
+.duomark{position:absolute;top:20px;right:22px;display:flex;align-items:center;gap:9px;opacity:.92}
+.duomark .x{color:#7a7f87;font-size:13px;font-weight:600}
+.themes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.theme-chip{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#a9aeb6;background:rgba(255,255,255,.05);white-space:nowrap}
+.theme-chip.active{background:var(--ember);border-color:var(--ember);color:#fff;font-weight:600}
+a.theme-chip{text-decoration:none;color:#a9aeb6;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+a.theme-chip:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.42);color:#fff}
+
+.systems{background:var(--card);border-radius:var(--radius);padding:14px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);margin-bottom:var(--gap);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.systems .lock{flex:none;width:34px;height:34px;border-radius:9px;background:#eceef0;display:flex;align-items:center;justify-content:center}
+.systems .txt{font-size:13.5px;min-width:220px;flex:1}
+.systems .txt b{font-weight:650}
+.sysbadges{display:flex;gap:8px;flex-wrap:wrap}
+.sysbadge{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:8px;background:#f0f1f3;border:1px solid #e2e4e8;color:#3c4046;white-space:nowrap}
+
+.vs-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:6px 4px 10px}
+.vs-head h2{font-size:17px;font-weight:750}
+.vs-head .hint{font-size:12.5px;color:var(--muted)}
+.replay{font-size:12.5px;font-weight:600;color:var(--pos);background:none;border:1px solid var(--ember);border-radius:99px;padding:4px 14px;cursor:pointer}
+.replay:hover{background:var(--ember);color:#fff}
+.vs{display:grid;grid-template-columns:1fr 108px 1fr;gap:0;align-items:stretch;margin-bottom:var(--gap)}
+.pane{background:var(--card);border-radius:var(--radius);padding:18px 20px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);position:relative;overflow:hidden}
+.pane.now{border-top:4px solid var(--steel)}
+.pane.next{border-top:4px solid var(--ember)}
+.pane .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:4px}
+.pane.now .tag{background:#eceef0;color:var(--steel)}
+.pane.next .tag{background:#fbe9dc;color:var(--pos)}
+.pane h3{font-size:15.5px;font-weight:750;margin-bottom:2px}
+.pane .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 10px;border-radius:8px;opacity:.35;transform:translateX(-6px);transition:opacity .5s ease,transform .5s ease,background .3s}
+.step.on{opacity:1;transform:none}
+.step .n{flex:none;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pane.now .step .n{background:#eceef0;color:#3d4148}
+.pane.next .step .n{background:#fbe9dc;color:var(--pos)}
+.step .b{font-size:13.5px}
+.step .b b{font-weight:650}
+.step .b .risk{display:inline-block;font-size:11px;font-weight:600;color:var(--risk);background:#f7e7e0;border-radius:99px;padding:1px 9px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.connector{width:2px;height:14px;background:#e6e3dd;margin-left:22px}
+.autos{margin:10px 0 0 38px;display:flex;flex-direction:column;gap:6px}
+.auto{font-size:13px;color:#3f3a35;display:flex;gap:8px;align-items:flex-start;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease}
+.auto.on{opacity:1;transform:none}
+.auto .chk{flex:none;width:17px;height:17px;border-radius:50%;background:var(--ember);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px;font-weight:700;box-shadow:0 0 7px rgba(226,97,27,.45)}
+.auto .who{color:var(--muted);font-size:11.5px}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.mid .count{font-size:22px;font-weight:800;line-height:1.05;white-space:nowrap;text-align:center}
+.mid .count .from{color:var(--steel)}
+.mid .count .to{color:var(--pos)}
+.mid .arrow{font-size:22px;color:var(--ember);text-shadow:0 0 10px rgba(226,97,27,.35)}
+@keyframes pulse{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.mid.play .arrow{animation:pulse 1s ease infinite}
+.mid .lbl{font-size:11px;color:var(--muted);text-align:center;line-height:1.3}
+.paylines{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed #e6e3dd}
+.pay{font-size:12.5px}
+.pay .v{font-size:19px;font-weight:800}
+.pane.now .pay .v{color:#3f444b}
+.pane.next .pay .v{color:var(--pos)}
+.pay .k{color:var(--muted)}
+.teller{margin-top:16px;background:#fbf2e9;border:1px solid #efd9c2;border-radius:8px;padding:12px 14px;opacity:0;transform:translateY(6px);transition:opacity .5s ease .1s,transform .5s ease .1s}
+.teller.on{opacity:1;transform:none}
+.teller .t{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:8px}
+.tellerrow{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:6px}
+.tellerrow:last-child{margin-bottom:0}
+.tellerrow .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--corten),var(--ember));flex:none;transition:width .8s ease}
+.tellerrow.dim .bar{background:#ddb28d}
+.tellerrow .cnt{font-weight:700;flex:none;width:26px;text-align:right}
+.teller .insight{font-size:12.5px;color:#4a3f34;margin-top:9px;border-top:1px dashed #ecd3ba;padding-top:8px}
+.teller .insight b{font-weight:650}
+
+.ladder-head{margin:26px 4px 4px}
+.ladder-head h2{font-size:17px;font-weight:750}
+.ladder-head p{font-size:13.5px;color:var(--muted);max-width:820px;margin-top:3px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);align-items:end;margin-top:14px;margin-bottom:var(--gap)}
+.tread{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(28,22,14,.08);cursor:pointer;border:2px solid transparent;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden;display:flex;flex-direction:column}
+.tread:hover{transform:translateY(-3px);box-shadow:0 4px 14px rgba(28,22,14,.12)}
+.tread.open{border-color:currentColor}
+.tread.open:hover{transform:none}
+.tread .bar{height:5px}
+.tread[data-lvl="kruip"]{color:var(--kruip)} .tread[data-lvl="kruip"] .bar{background:var(--kruip)}
+.tread[data-lvl="loop"]{color:var(--loop)} .tread[data-lvl="loop"] .bar{background:var(--loop)}
+.tread[data-lvl="ren"]{color:var(--ren)} .tread[data-lvl="ren"] .bar{background:linear-gradient(90deg,var(--corten),var(--ember))}
+.tread .inner{padding:14px 16px 16px;color:var(--text)}
+.lvl{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;padding:2px 9px;border-radius:99px;margin-bottom:8px;color:#fff}
+.tread[data-lvl="kruip"] .lvl{background:var(--kruip)}
+.tread[data-lvl="loop"] .lvl{background:var(--loop)}
+.tread[data-lvl="ren"] .lvl{background:var(--ren)}
+.tread h4{font-size:14.5px;font-weight:750;line-height:1.3;margin-bottom:4px}
+.tread .oneliner{font-size:12.5px;color:var(--muted)}
+.tread .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pill{font-size:11px;font-weight:600;background:#f2f0ec;border-radius:99px;padding:2px 9px;color:#55585f;white-space:nowrap}
+.tread .more{font-size:11.5px;font-weight:600;margin-top:10px;color:currentColor}
+.tread .detail{display:none;border-top:1px solid #efece6;margin-top:12px;padding-top:12px;color:var(--text);cursor:auto}
+.tread.open .detail{display:block}
+.detail h5{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.detail h5:first-child{margin-top:0}
+.detail p,.detail li{font-size:12.5px}
+.detail ul{list-style:none}
+.detail li{padding-left:16px;position:relative;margin-bottom:3px}
+.detail li:before{content:"›";position:absolute;left:2px;color:currentColor;font-weight:700}
+@media(min-width:861px){
+  .ladder .tread:nth-child(1){margin-top:96px}
+  .ladder .tread:nth-child(2){margin-top:64px}
+  .ladder .tread:nth-child(3){margin-top:32px}
+  .ladder .tread:nth-child(4){margin-top:0}
+  .ladder{align-items:start}
+}
+.ladder .tread.open{grid-column:1 / -1}
+@media(min-width:861px){.ladder .tread.open{margin-top:0}}
+
+.demo{margin-top:14px;background:#f8f6f1;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px;cursor:auto}
+.demo-tag{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#fff;background:var(--panda);padding:4px 12px;border-radius:99px;margin-bottom:11px}
+.demo-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 6px rgba(226,97,27,.8);animation:blink 1.6s ease infinite}
+@keyframes blink{50%{opacity:.35}}
+.demo .dhint{font-size:12px;color:var(--muted);margin:-6px 0 10px}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.btn-go{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--corten),var(--ember));border:none;border-radius:8px;padding:9px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(226,97,27,.3);font-family:inherit}
+.btn-go:hover{filter:brightness(1.08)}
+.btn-go:disabled{opacity:.55;cursor:wait}
+.pickrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.pickbtn{font-size:12px;font-weight:650;border:1.5px solid #e2ddd2;background:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit}
+.pickbtn.act{border-color:var(--ember);box-shadow:0 2px 10px rgba(226,97,27,.16)}
+
+/* demo1 — register */
+.t7d1{display:grid;grid-template-columns:1fr 1.15fr;gap:12px}
+.docpile,.regbox{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 12px}
+.docpile .bh,.regbox .bh{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.docitem{display:flex;gap:8px;align-items:center;font-size:12px;padding:6px 8px;border:1px solid #eee7db;border-radius:7px;margin-bottom:6px;background:#f8f6f1}
+.docitem:last-child{margin-bottom:0}
+.docitem .ic{flex:none;width:20px;height:20px;border-radius:5px;background:var(--corten);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800}
+.docitem.read{opacity:.45}
+.regcard{border:1px solid #e7e2d8;border-radius:8px;padding:9px 11px;margin-bottom:8px;border-left:3px solid var(--ember);background:#fff}
+.regcard:last-child{margin-bottom:0}
+.regcard .rn{font-size:12.5px;font-weight:750;margin-bottom:5px}
+.regcard .rf{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:11.5px}
+.regcard .rf span{color:var(--muted)}
+.regbox .empty{color:var(--muted);font-size:12px;text-align:center;padding:26px 8px}
+
+/* demo2 — deadlines */
+.dlrow{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:9px 12px;margin-bottom:8px}
+.dlrow.urgent{border-left:3px solid var(--risk)}
+.dlrow.soon{border-left:3px solid var(--ember)}
+.dlrow.ok{border-left:3px solid var(--up)}
+.dlrow .cd{flex:none;width:70px;text-align:center}
+.dlrow .cd .num{font-size:17px;font-weight:800;line-height:1}
+.dlrow .cd .unit{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.dlrow .dm{flex:1;font-size:12px;line-height:1.4}
+.dlrow .dm small{display:block;color:var(--muted);font-size:10.5px}
+.dlrow .amt{flex:none;font-size:12px;font-weight:800;color:var(--risk)}
+.dl-note{font-size:11.5px;color:var(--muted);margin-top:8px}
+
+/* demo3 — contract-lezer */
+.clbox{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:12px 14px}
+.clsum{font-size:12.5px;line-height:1.6;background:#f8f6f1;border-radius:8px;padding:9px 11px;margin-bottom:10px}
+.clsum b{font-weight:700}
+.flag{display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.5;padding:7px 0;border-top:1px solid #f0ece2}
+.flag:first-of-type{border-top:none}
+.flag .sev{flex:none;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;border-radius:99px;padding:2px 8px;margin-top:1px}
+.flag .sev.hoog{background:#f7d9cd;color:var(--risk)}
+.flag .sev.mid{background:#fbe9dc;color:var(--pos)}
+.flag .sev.laag{background:#eef0f2;color:var(--steel)}
+
+/* demo4 — orkestratie */
+.orch-chain{display:grid;gap:9px;margin-top:11px}
+.ochain{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:10px 12px;opacity:.35;transform:translateX(-5px);transition:opacity .45s,transform .45s}
+.ochain.on{opacity:1;transform:none}
+.ochain .oi{flex:none;width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--corten),var(--ember));display:flex;align-items:center;justify-content:center;font-size:14px}
+.ochain .ot{font-size:12.5px;line-height:1.45}
+.ochain .ot b{font-weight:700}
+.ochain .ot .lnk{color:var(--pos);font-size:10.5px;font-weight:700}
+.d-note{font-size:11.5px;color:var(--muted);margin-top:11px;border-top:1px dashed #e0dbd0;padding-top:9px}
+.d-note b{color:var(--text);font-weight:650}
+.note{background:var(--card);border-radius:var(--radius);padding:13px 18px;box-shadow:0 1px 3px rgba(28,22,14,.08);font-size:13px;color:var(--muted);margin-bottom:var(--gap);border-left:3px solid var(--ember)}
+.note b{color:var(--text);font-weight:650}
+footer{color:var(--muted);font-size:12px;padding:4px 4px 22px}
+
+@media(max-width:860px){
+  .vs{grid-template-columns:1fr}
+  .mid{flex-direction:row;padding:10px 0;gap:12px}
+  .mid .arrow{transform:rotate(90deg)}
+  .ladder{grid-template-columns:1fr}
+  header.top h1{font-size:20px}
+  .t7d1{grid-template-columns:1fr}
+}
+@media(max-width:560px){ .duomark{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="demo-banner"><b>Schetsversie</b> — contracten, bedragen en partijen zijn fictief maar realistisch, gebaseerd op een typische import-uit-China-keten. Live draait dit op Wouts eigen documenten.</div>
+
+  <header class="top">
+    <div class="duomark" aria-hidden="true">
+      <svg width="26" height="24" viewBox="0 0 26 24">
+        <circle cx="6" cy="5" r="4" fill="#0e0f10"/><circle cx="20" cy="5" r="4" fill="#0e0f10"/>
+        <circle cx="13" cy="13" r="10" fill="#f7f5f1"/>
+        <ellipse cx="9" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(-15 9 12)"/>
+        <ellipse cx="17" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(15 17 12)"/>
+        <circle cx="13" cy="16.5" r="1.4" fill="#0e0f10"/>
+      </svg>
+      <span class="x">×</span>
+      <svg width="19" height="23" viewBox="0 0 20 24">
+        <path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#e2611b"/>
+        <path d="M10 22.6a3.4 3.4 0 0 0 3.4-3.4c0-2.1-1.9-3.1-3.4-5.2-1.5 2.1-3.4 3.1-3.4 5.2a3.4 3.4 0 0 0 3.4 3.4z" fill="#f7b26b"/>
+      </svg>
+    </div>
+    <div class="crumb">PakketPanda &amp; ASH Grill &amp; Heat · Thema 7 van 7</div>
+    <h1>Leveranciers &amp; contracten</h1>
+    <div class="sub">Achter elke container zit een keten: koopcontracten met leveranciers in China, transport-agents, havenpapieren en veel verschillende betaalmomenten — nu in de mailbox, in ordners en in Wouts hoofd.</div>
+    <div class="themes">
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%201%20visueel%20(bestelling%20tot%20deurmat).html">1 · Bestelling tot deurmat</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%202%20visueel%20(klantcontact).html">2 · Klantcontact</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%203%20visueel%20(bedrijfsgeheugen).html">3 · Bedrijfsgeheugen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%204%20visueel%20(groei%20en%20merk).html">4 · Groei &amp; merk</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%205%20visueel%20(sturing%20en%20signalen).html">5 · Sturing &amp; signalen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%206%20visueel%20(geld%20marge%20en%20cashflow).html">6 · Geld, marge &amp; cashflow</a>
+      <span class="theme-chip active">7 · Leveranciers &amp; contracten</span>
+    </div>
+  </header>
+
+  <div class="systems">
+    <div class="lock" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23252a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <div class="txt"><b>Het register ontsluit — het tekent nooit zelf.</b> Documenten blijven waar ze zijn; de bewaking leest mee en seint op tijd. Ondertekenen doet Wout.</div>
+    <div class="sysbadges">
+      <span class="sysbadge">Gmail</span>
+      <span class="sysbadge">Drive / ordners</span>
+      <span class="sysbadge">Agenda</span>
+      <span class="sysbadge">Boekhouding</span>
+    </div>
+  </div>
+
+  <div class="vs-head">
+    <h2>Van een la vol PDF's naar grip</h2>
+    <span class="hint">één gemiste termijn of clausule kan een levering vertragen of geld kosten</span>
+    <button class="replay" onclick="playAnim()">↺ Speel opnieuw af</button>
+  </div>
+
+  <section class="vs">
+    <div class="pane now">
+      <span class="tag">Status quo</span>
+      <h3>Alles in de mailbox en in het hoofd</h3>
+      <div class="sub">De hele import-keten leeft verspreid.</div>
+      <div class="steps" id="now-steps">
+        <div class="step"><span class="n">1</span><div class="b"><b>Koopcontracten, levercontracten, havenpapieren</b> — in de mail, in ordners.</div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">2</span><div class="b"><b>Veel verschillende betaalmomenten</b>, elk met een eigen deadline. <span class="risk">makkelijk te missen</span></div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">3</span><div class="b"><b>Eén gemiste termijn of clausule</b> vertraagt een levering of kost onverwacht geld.</div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">verspreid</div><div class="k">geen overzicht in één oogopslag</div></div>
+        <div class="pay"><div class="v">hoofd</div><div class="k">termijnen leven in Wouts geheugen</div></div>
+        <div class="pay"><div class="v">risico</div><div class="k">een clausule over het hoofd zien</div></div>
+      </div>
+    </div>
+
+    <div class="mid" id="mid">
+      <div class="count"><span class="from">la vol</span> <span style="color:var(--muted);font-size:16px">→</span> <span class="to">grip</span></div>
+      <div class="arrow">➜</div>
+      <div class="lbl">van PDF's in een la<br>naar één register<br>dat op tijd seint</div>
+    </div>
+
+    <div class="pane next">
+      <span class="tag">Straks</span>
+      <h3>Eén register dat meedenkt</h3>
+      <div class="sub">Kernvelden eruit, deadlines bewaakt, risico's gemarkeerd.</div>
+      <div class="steps">
+        <div class="step" id="next-step1"><span class="n">1</span><div class="b"><b>Elk contract op één plek</b>, met partij, bedrag, betaaltermijn, incoterm en deadline eruit gehaald.</div></div>
+      </div>
+      <div class="autos" id="autos">
+        <div class="auto"><span class="chk">✓</span><div>Seintje vóór elke aanbetaling, restbetaling, verlenging of tekenmoment <span class="who">· bewaking</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Nieuw contract erin? Samenvatting in gewone taal + rode vlaggen <span class="who">· contract-lezer</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Eén inkooporder genereert betaalmomenten, ETA én voorraadsignaal <span class="who">· orkestratie</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Ondertekenen blijft mensenwerk — Wout houdt de pen <span class="who">· altijd</span></div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">1 register</div><div class="k">alle contracten doorzoekbaar</div></div>
+        <div class="pay"><div class="v">op tijd</div><div class="k">nooit meer een termijn missen</div></div>
+        <div class="pay"><div class="v">geen jurist</div><div class="k">rode vlaggen in gewone taal</div></div>
+      </div>
+      <div class="teller" id="teller">
+        <div class="t">En het koppelt door naar de rest</div>
+        <div class="tellerrow"><span class="cnt">→</span><span class="bar" style="width:0" data-w="60%"></span><span>betaalmomenten naar de cashflow (thema 6)</span></div>
+        <div class="tellerrow dim"><span class="cnt">→</span><span class="bar" style="width:0" data-w="48%"></span><span>container-ETA naar de containerwacht (thema 1)</span></div>
+        <div class="insight"><b>De cirkel rond:</b> hiermee sluit de keten van bestelling tot deurmat. Eén order bij een Chinese leverancier zet automatisch de betaling, de aankomst én het voorraadsignaal in gang.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ladder-head">
+    <h2>De ladder — klein beginnen, opbouwen wat werkt</h2>
+    <p>Van kruipen via lopen naar rennen. <b>Klik op een trede</b> voor wat het doet, wat ervoor nodig is, de bouwtijd — én een klikbare mini-demo.</p>
+  </div>
+
+  <section class="ladder">
+
+    <!-- TREDE 1 — register -->
+    <div class="tread" data-lvl="kruip" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Kruipen</span>
+        <h4>Het contract- &amp; documentregister</h4>
+        <div class="oneliner">Alle contracten op één plek, met de kernvelden er automatisch uitgehaald.</div>
+        <div class="meta"><span class="pill">±0,5–1 sprint</span><span class="pill">kennisbank-patroon</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Alle contracten en papieren op één plek, met de kernvelden er automatisch uitgehaald: welke partij, welk bedrag, welke betaaltermijn, welke incoterm, welke deadline. Van een la vol PDF's naar een doorzoekbaar overzicht.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Kopieën van de documenten (zelfde patroon als het bedrijfsgeheugen, thema 3)</li>
+            <li>Verder niets — het is uitlezen van wat er al is</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5–1 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Links de losse documenten. Druk op uitlezen — het register haalt de kernvelden eruit.</p>
+            <div class="t7d1">
+              <div class="docpile">
+                <div class="bh">Losse documenten</div>
+                <div class="docitem" id="dc-1"><span class="ic">PDF</span>Koopcontract — Ningbo Sunrise Co.</div>
+                <div class="docitem" id="dc-2"><span class="ic">PDF</span>Levercontract — PostNL Zakelijk</div>
+                <div class="docitem" id="dc-3"><span class="ic">PDF</span>Transport-agent — Seabridge</div>
+                <div class="docitem" id="dc-4"><span class="ic">PDF</span>Havenpapieren — invoeraangifte</div>
+              </div>
+              <div class="regbox">
+                <div class="bh">Het register</div>
+                <div id="t7d1-out"><div class="empty">Nog leeg — druk op uitlezen →</div></div>
+              </div>
+            </div>
+            <button class="btn-go" id="t7d1-go" style="margin-top:12px" onclick="t7d1Run()">Lees de kernvelden uit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 2 — deadline-bewaking -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>Deadline- &amp; betaalbewaking</h4>
+        <div class="oneliner">Een seintje vóór elk moment dat telt — nooit meer een termijn missen.</div>
+        <div class="meta"><span class="pill">±0,5 sprint</span><span class="pill">naar agenda / WhatsApp</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Automatisch een seintje vóór elk moment dat telt: aanbetaling, restbetaling bij verscheping, een verlopend contract, een document dat getekend moet worden. Nooit meer een termijn missen omdat het onderin de mail lag.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Het register uit trede 1</li>
+            <li>Koppeling met agenda / WhatsApp voor de seintjes</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Zo ziet het eruit</span>
+            <p class="dhint">De momenten die eraan komen — met de meest urgente bovenaan.</p>
+            <div class="dlrow urgent">
+              <div class="cd"><div class="num">2</div><div class="unit">dagen</div></div>
+              <div class="dm"><b>Aanbetaling container A</b> — Ningbo Sunrise (30%)<small>overschrijving naar CN · duurt 1–2 werkdagen</small></div>
+              <div class="amt">€6.000</div>
+            </div>
+            <div class="dlrow soon">
+              <div class="cd"><div class="num">9</div><div class="unit">dagen</div></div>
+              <div class="dm"><b>Invoeraangifte tekenen</b> — vorige zending<small>vóór lossing, anders demurrage-kosten</small></div>
+              <div class="amt" style="color:var(--pos)">tekenen</div>
+            </div>
+            <div class="dlrow soon">
+              <div class="cd"><div class="num">15</div><div class="unit">dagen</div></div>
+              <div class="dm"><b>Restbetaling container A</b> — bij verscheping (70%)<small>koppelt aan de cashflow-kalender (thema 6)</small></div>
+              <div class="amt">€14.000</div>
+            </div>
+            <div class="dlrow ok">
+              <div class="cd"><div class="num">79</div><div class="unit">dagen</div></div>
+              <div class="dm"><b>PostNL-contract</b> verlengt stilzwijgend<small>opzegtermijn 3 mnd — beslis vóór 30 sep</small></div>
+              <div class="amt" style="color:var(--up)">beslis</div>
+            </div>
+            <div class="dl-note">Elk seintje komt ruim op tijd, met precies genoeg context om te handelen — in de agenda én, bij urgentie, op WhatsApp.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 3 — contract-lezer -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De contract-lezer</h4>
+        <div class="oneliner">Nieuw contract erin → samenvatting in gewone taal + rode vlaggen, zonder jurist.</div>
+        <div class="meta"><span class="pill">±0,5 sprint</span><span class="pill">plain-language</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Een nieuw contract erin → een samenvatting in gewone taal plus rode vlaggen: afwijkende betaaltermijn, boeteclausules, een incoterm die het transportrisico bij Wout legt. Zodat hij weet wat hij tekent, zonder jurist.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Het contract als bestand — verder niets</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Kies een contract. De lezer vat het samen en markeert waar je op moet letten — met een ernst-inschatting.</p>
+            <div class="pickrow">
+              <button class="pickbtn act" id="cl-koop" onclick="t7d3Pick('koop')">Koopcontract CN</button>
+              <button class="pickbtn" id="cl-agent" onclick="t7d3Pick('agent')">Transport-agent</button>
+              <button class="pickbtn" id="cl-postnl" onclick="t7d3Pick('postnl')">PostNL-contract</button>
+            </div>
+            <div class="clbox" id="t7d3-out"></div>
+            <div class="d-note"><b>Let op:</b> dit is een hulpmiddel dat aandacht­spunten opspoort, geen juridisch advies. Bij grote of ongebruikelijke contracten blijft een jurist verstandig.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 4 — import-orkestratie -->
+    <div class="tread" data-lvl="ren" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Rennen</span>
+        <h4>Import-orkestratie</h4>
+        <div class="oneliner">Eén inkooporder zet betaalmomenten, ETA én voorraadsignaal automatisch in gang.</div>
+        <div class="meta"><span class="pill">integratieklus</span><span class="pill">sluit de keten</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>De keten wordt één geheel: één inkooporder bij een Chinese leverancier genereert automatisch de betaalmomenten (thema 6), de verwachte container-ETA (thema 1) en het voorraadsignaal. Van losse papieren naar één doorlopend proces van bestelling tot schap.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Het register (trede 1) en de bewaking (trede 2)</li>
+            <li>Koppeling met thema 1 (containerwacht) en thema 6 (cashflow)</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>Integratieklus; het sluitstuk dat alle andere thema's verbindt.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Plaats een inkooporder — en kijk hoe één handeling de rest van de keten automatisch in gang zet.</p>
+            <button class="btn-go" id="t7d4-go" onclick="t7d4Run()">Plaats inkooporder · 200× Solaris bij Ningbo Sunrise</button>
+            <div class="orch-chain" id="t7d4-chain">
+              <div class="ochain" id="oc1"><span class="oi">💶</span><div class="ot"><b>Betaalmomenten aangemaakt:</b> aanbetaling €6.000 nu, restbetaling €14.000 bij verscheping. <span class="lnk">→ cashflow-kalender (thema 6)</span></div></div>
+              <div class="ochain" id="oc2"><span class="oi">🚢</span><div class="ot"><b>Container-ETA berekend:</b> ~5 weken productie + zeevracht → <b>18 augustus</b>. <span class="lnk">→ containerwacht (thema 1)</span></div></div>
+              <div class="ochain" id="oc3"><span class="oi">📦</span><div class="ot"><b>Voorraadsignaal gezet:</b> Solaris gedekt tot de ETA; alarm als het tempo de aankomst voorbijstreeft. <span class="lnk">→ voorraadwacht (thema 1)</span></div></div>
+              <div class="ochain" id="oc4"><span class="oi">🗓️</span><div class="ot"><b>Deadlines in de agenda:</b> aanbetaling, restbetaling en tekenmoment havenpapieren. <span class="lnk">→ deadline-bewaking (trede 2)</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="note"><b>Hiermee is de cirkel rond:</b> thema 7 verbindt de losse import-papieren met de containerwacht (thema 1) en de cashflow (thema 6). Eén order bij een Chinese leverancier zet automatisch de betaling, de aankomst én het voorraadsignaal in gang — van bestelling tot schap, in één doorlopend proces.</div>
+
+  <footer>Thema 7 van 7 · gebouwd voor Wout · fictieve maar realistische contracten · het register tekent nooit zelf · werkt volledig offline · documenten en agenda blijven exact zoals ze zijn</footer>
+</div>
+
+<script>
+function toggle(card){
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.tread.open').forEach(t=>{
+    t.classList.remove('open');
+    t.querySelector('.more').textContent='Bekijk detail ▾';
+  });
+  if(!wasOpen){
+    card.classList.add('open');
+    card.querySelector('.more').textContent='Verberg detail ▴';
+  }
+}
+
+let animTimers=[];
+function playAnim(){
+  animTimers.forEach(clearTimeout); animTimers=[];
+  const nowSteps=document.querySelectorAll('#now-steps .step');
+  const autos=document.querySelectorAll('#autos .auto');
+  const step1=document.getElementById('next-step1');
+  const teller=document.getElementById('teller');
+  const mid=document.getElementById('mid');
+  nowSteps.forEach(s=>s.classList.remove('on'));
+  autos.forEach(a=>a.classList.remove('on'));
+  step1.classList.remove('on'); teller.classList.remove('on'); mid.classList.remove('play');
+  document.querySelectorAll('#teller .bar').forEach(b=>b.style.width='0');
+  let t=300;
+  nowSteps.forEach(s=>{animTimers.push(setTimeout(()=>s.classList.add('on'),t)); t+=550;});
+  animTimers.push(setTimeout(()=>mid.classList.add('play'),t)); t+=500;
+  animTimers.push(setTimeout(()=>step1.classList.add('on'),t)); t+=550;
+  autos.forEach(a=>{animTimers.push(setTimeout(()=>a.classList.add('on'),t)); t+=350;});
+  animTimers.push(setTimeout(()=>{
+    teller.classList.add('on');
+    document.querySelectorAll('#teller .bar').forEach(b=>b.style.width=b.dataset.w);
+  },t+250));
+}
+
+/* ============ demo 1 — register ============ */
+const T7D1=[
+  {doc:'dc-1',rn:'Koopcontract — Ningbo Sunrise Co.',f:[['Partij','Ningbo Sunrise Co. (CN)'],['Bedrag','€20.000'],['Betaaltermijn','30% aanbetaling · 70% bij verscheping'],['Incoterm','FOB Ningbo'],['Deadline','aanbetaling 5 jul']]},
+  {doc:'dc-2',rn:'Levercontract — PostNL Zakelijk',f:[['Partij','PostNL Zakelijk'],['Bedrag','tarief per pakket'],['Looptijd','tot 31 dec, stilzwijgend +12 mnd'],['Opzegtermijn','3 maanden'],['Deadline','beslis vóór 30 sep']]},
+  {doc:'dc-3',rn:'Transport-agent — Seabridge',f:[['Partij','Seabridge Forwarding'],['Bedrag','€2.500 per container'],['Betaaltermijn','bij aankomst haven'],['Incoterm','sluit aan op FOB'],['Deadline','bij lossing']]},
+  {doc:'dc-4',rn:'Havenpapieren — invoeraangifte',f:[['Partij','Douane NL'],['Bedrag','invoerrechten 2,7% + 21% BTW'],['Actie','aangifte tekenen'],['Incoterm','—'],['Deadline','vóór lossing']]}
+];
+let t7d1Timers=[];
+function t7d1Run(){
+  t7d1Timers.forEach(clearTimeout); t7d1Timers=[];
+  const btn=document.getElementById('t7d1-go');
+  const out=document.getElementById('t7d1-out');
+  btn.disabled=true; btn.textContent='Uitlezen…';
+  out.innerHTML='';
+  document.querySelectorAll('.docitem').forEach(d=>d.classList.remove('read'));
+  let t=250;
+  T7D1.forEach(c=>{
+    t7d1Timers.push(setTimeout(()=>{
+      document.getElementById(c.doc).classList.add('read');
+      let rf='';
+      c.f.forEach(x=>rf+='<span>'+x[0]+'</span><div>'+x[1]+'</div>');
+      out.insertAdjacentHTML('beforeend','<div class="regcard" style="animation:fadein .4s ease"><div class="rn">'+c.rn+'</div><div class="rf">'+rf+'</div></div>');
+    },t));
+    t+=520;
+  });
+  t7d1Timers.push(setTimeout(()=>{btn.disabled=false; btn.textContent='Opnieuw uitlezen';},t));
+}
+
+/* ============ demo 3 — contract-lezer ============ */
+const T7D3={
+  koop:{sum:'<b>Koopcontract Ningbo Sunrise</b> — 200 stuks Solaris, €20.000, FOB Ningbo. Betaling 30% vooraf, 70% bij verscheping.',
+    flags:[['hoog','FOB Ningbo betekent dat het transportrisico vanaf het schip bij jóu ligt — verzeker de lading.'],['hoog','70% betaling vóór aankomst: bij niet-levering sta je met lege handen. Check de reputatie / gebruik een escrow.'],['mid','Boete van 5% bij annulering na productiestart.']]},
+  agent:{sum:'<b>Transport-agent Seabridge</b> — €2.500 per container, betaling bij aankomst haven.',
+    flags:[['mid','Geen SLA op vertraging: als het schip later is, heb je geen compensatierecht.'],['mid','Demurrage- en opslagkosten bij late lossing zijn voor jouw rekening — plan de invoeraangifte op tijd (trede 2).'],['laag','Facturatie per container, geen jaarverplichting — flexibel.']]},
+  postnl:{sum:'<b>PostNL Zakelijk</b> — verzendtarief per pakket, looptijd tot 31 december.',
+    flags:[['hoog','Stilzwijgende verlenging met 12 maanden bij niet-opzeggen — opzegtermijn 3 maanden.'],['laag','Tarief wordt jaarlijks geïndexeerd; check de nieuwe staffel bij verlenging.'],['laag','Volumekorting vanaf 500 pakketten/maand — mogelijk nu al haalbaar.']]}
+};
+function t7d3Pick(k){
+  ['koop','agent','postnl'].forEach(id=>document.getElementById('cl-'+id).classList.toggle('act',id===k));
+  const d=T7D3[k];
+  let html='<div class="clsum">'+d.sum+'</div>';
+  d.flags.forEach(f=>html+='<div class="flag"><span class="sev '+f[0]+'">'+f[0]+'</span><div>'+f[1]+'</div></div>');
+  document.getElementById('t7d3-out').innerHTML=html;
+}
+
+/* ============ demo 4 — orkestratie ============ */
+let t7d4Timers=[];
+function t7d4Run(){
+  t7d4Timers.forEach(clearTimeout); t7d4Timers=[];
+  const btn=document.getElementById('t7d4-go');
+  btn.disabled=true; btn.textContent='Order geplaatst — keten loopt…';
+  ['oc1','oc2','oc3','oc4'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('on');
+    t7d4Timers.push(setTimeout(()=>el.classList.add('on'),300+i*650));
+  });
+  t7d4Timers.push(setTimeout(()=>{btn.disabled=false; btn.textContent='Plaats nog een order';},300+4*650));
+}
+
+window.addEventListener('load',()=>{
+  setTimeout(playAnim,250);
+  t7d3Pick('koop');
+});
+</script>
+</body>
+</html>
