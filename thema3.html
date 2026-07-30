@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thema 3 — Het bedrijfsgeheugen · PakketPanda &amp; ASH</title>
+<style>
+:root{
+  --bg:#f3f0ea; --card:#ffffff; --header:#17181a;
+  --text:#22242a; --muted:#6f737b; --ondark:#f7f5f1;
+  --panda:#1c1e21; --steel:#4a4f57; --ember:#e2611b; --corten:#9a4a26;
+  --pos:#c9520f; --risk:#a33d22; --warn:#8a5416;
+  --kruip:#26282c; --loop:#9a4a26; --ren:#e2611b;
+  --gap:16px; --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:var(--gap)}
+.demo-banner{background:#fdf2e6;border:1px solid #f0d4b2;color:var(--warn);border-radius:var(--radius);padding:8px 16px;font-size:13px;margin-bottom:var(--gap)}
+
+header.top{background:radial-gradient(circle at 90% 130%,rgba(226,97,27,.30),transparent 52%),radial-gradient(circle at 72% 160%,rgba(154,74,38,.22),transparent 45%),var(--header);color:var(--ondark);padding:20px 24px;border-radius:var(--radius);margin-bottom:var(--gap);position:relative;overflow:hidden;border-bottom:3px solid var(--ember)}
+.crumb{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9aa0a8;font-weight:600;margin-bottom:6px}
+header.top h1{font-size:24px;font-weight:800;line-height:1.25;letter-spacing:-.3px}
+header.top .sub{font-size:14px;color:#a9aeb6;margin-top:6px;max-width:760px}
+.duomark{position:absolute;top:20px;right:22px;display:flex;align-items:center;gap:9px;opacity:.92}
+.duomark .x{color:#7a7f87;font-size:13px;font-weight:600}
+.themes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.theme-chip{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#a9aeb6;background:rgba(255,255,255,.05);white-space:nowrap}
+.theme-chip.active{background:var(--ember);border-color:var(--ember);color:#fff;font-weight:600}
+a.theme-chip{text-decoration:none;color:#a9aeb6;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+a.theme-chip:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.42);color:#fff}
+
+.systems{background:var(--card);border-radius:var(--radius);padding:14px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);margin-bottom:var(--gap);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.systems .lock{flex:none;width:34px;height:34px;border-radius:9px;background:#eceef0;display:flex;align-items:center;justify-content:center}
+.systems .txt{font-size:13.5px;min-width:220px;flex:1}
+.systems .txt b{font-weight:650}
+.sysbadges{display:flex;gap:8px;flex-wrap:wrap}
+.sysbadge{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:8px;background:#f0f1f3;border:1px solid #e2e4e8;color:#3c4046;white-space:nowrap}
+
+.vs-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:6px 4px 10px}
+.vs-head h2{font-size:17px;font-weight:750}
+.vs-head .hint{font-size:12.5px;color:var(--muted)}
+.replay{font-size:12.5px;font-weight:600;color:var(--pos);background:none;border:1px solid var(--ember);border-radius:99px;padding:4px 14px;cursor:pointer}
+.replay:hover{background:var(--ember);color:#fff}
+.vs{display:grid;grid-template-columns:1fr 108px 1fr;gap:0;align-items:stretch;margin-bottom:var(--gap)}
+.pane{background:var(--card);border-radius:var(--radius);padding:18px 20px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);position:relative;overflow:hidden}
+.pane.now{border-top:4px solid var(--steel)}
+.pane.next{border-top:4px solid var(--ember)}
+.pane .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:4px}
+.pane.now .tag{background:#eceef0;color:var(--steel)}
+.pane.next .tag{background:#fbe9dc;color:var(--pos)}
+.pane h3{font-size:15.5px;font-weight:750;margin-bottom:2px}
+.pane .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 10px;border-radius:8px;opacity:.35;transform:translateX(-6px);transition:opacity .5s ease,transform .5s ease,background .3s}
+.step.on{opacity:1;transform:none}
+.step .n{flex:none;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pane.now .step .n{background:#eceef0;color:#3d4148}
+.pane.next .step .n{background:#fbe9dc;color:var(--pos)}
+.step .b{font-size:13.5px}
+.step .b b{font-weight:650}
+.step .b .risk{display:inline-block;font-size:11px;font-weight:600;color:var(--risk);background:#f7e7e0;border-radius:99px;padding:1px 9px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.connector{width:2px;height:14px;background:#e6e3dd;margin-left:22px}
+.autos{margin:10px 0 0 38px;display:flex;flex-direction:column;gap:6px}
+.auto{font-size:13px;color:#3f3a35;display:flex;gap:8px;align-items:flex-start;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease}
+.auto.on{opacity:1;transform:none}
+.auto .chk{flex:none;width:17px;height:17px;border-radius:50%;background:var(--ember);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px;font-weight:700;box-shadow:0 0 7px rgba(226,97,27,.45)}
+.auto .who{color:var(--muted);font-size:11.5px}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.mid .count{font-size:22px;font-weight:800;line-height:1.05;white-space:nowrap;text-align:center}
+.mid .count .from{color:var(--steel)}
+.mid .count .to{color:var(--pos)}
+.mid .arrow{font-size:22px;color:var(--ember);text-shadow:0 0 10px rgba(226,97,27,.35)}
+@keyframes pulse{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.mid.play .arrow{animation:pulse 1s ease infinite}
+.mid .lbl{font-size:11px;color:var(--muted);text-align:center;line-height:1.3}
+.paylines{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed #e6e3dd}
+.pay{font-size:12.5px}
+.pay .v{font-size:19px;font-weight:800}
+.pane.now .pay .v{color:#3f444b}
+.pane.next .pay .v{color:var(--pos)}
+.pay .k{color:var(--muted)}
+.teller{margin-top:16px;background:#fbf2e9;border:1px solid #efd9c2;border-radius:8px;padding:12px 14px;opacity:0;transform:translateY(6px);transition:opacity .5s ease .1s,transform .5s ease .1s}
+.teller.on{opacity:1;transform:none}
+.teller .t{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:8px}
+.tellerrow{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:6px}
+.tellerrow:last-child{margin-bottom:0}
+.tellerrow .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--corten),var(--ember));flex:none;transition:width .8s ease}
+.tellerrow.dim .bar{background:#ddb28d}
+.tellerrow .cnt{font-weight:700;flex:none;width:24px;text-align:right}
+.teller .insight{font-size:12.5px;color:#4a3f34;margin-top:9px;border-top:1px dashed #ecd3ba;padding-top:8px}
+.teller .insight b{font-weight:650}
+
+.ladder-head{margin:26px 4px 4px}
+.ladder-head h2{font-size:17px;font-weight:750}
+.ladder-head p{font-size:13.5px;color:var(--muted);max-width:820px;margin-top:3px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);align-items:end;margin-top:14px;margin-bottom:var(--gap)}
+.tread{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(28,22,14,.08);cursor:pointer;border:2px solid transparent;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden;display:flex;flex-direction:column}
+.tread:hover{transform:translateY(-3px);box-shadow:0 4px 14px rgba(28,22,14,.12)}
+.tread.open{border-color:currentColor}
+.tread.open:hover{transform:none}
+.tread .bar{height:5px}
+.tread[data-lvl="kruip"]{color:var(--kruip)} .tread[data-lvl="kruip"] .bar{background:var(--kruip)}
+.tread[data-lvl="loop"]{color:var(--loop)} .tread[data-lvl="loop"] .bar{background:var(--loop)}
+.tread[data-lvl="ren"]{color:var(--ren)} .tread[data-lvl="ren"] .bar{background:linear-gradient(90deg,var(--corten),var(--ember))}
+.tread .inner{padding:14px 16px 16px;color:var(--text)}
+.lvl{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;padding:2px 9px;border-radius:99px;margin-bottom:8px;color:#fff}
+.tread[data-lvl="kruip"] .lvl{background:var(--kruip)}
+.tread[data-lvl="loop"] .lvl{background:var(--loop)}
+.tread[data-lvl="ren"] .lvl{background:var(--ren)}
+.tread h4{font-size:14.5px;font-weight:750;line-height:1.3;margin-bottom:4px}
+.tread .oneliner{font-size:12.5px;color:var(--muted)}
+.tread .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pill{font-size:11px;font-weight:600;background:#f2f0ec;border-radius:99px;padding:2px 9px;color:#55585f;white-space:nowrap}
+.tread .more{font-size:11.5px;font-weight:600;margin-top:10px;color:currentColor}
+.tread .detail{display:none;border-top:1px solid #efece6;margin-top:12px;padding-top:12px;color:var(--text);cursor:auto}
+.tread.open .detail{display:block}
+.detail h5{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.detail h5:first-child{margin-top:0}
+.detail p,.detail li{font-size:12.5px}
+.detail ul{list-style:none}
+.detail li{padding-left:16px;position:relative;margin-bottom:3px}
+.detail li:before{content:"›";position:absolute;left:2px;color:currentColor;font-weight:700}
+@media(min-width:861px){
+  .ladder .tread:nth-child(1){margin-top:96px}
+  .ladder .tread:nth-child(2){margin-top:64px}
+  .ladder .tread:nth-child(3){margin-top:32px}
+  .ladder .tread:nth-child(4){margin-top:0}
+  .ladder{align-items:start}
+}
+.ladder .tread.open{grid-column:1 / -1}
+@media(min-width:861px){.ladder .tread.open{margin-top:0}}
+
+.demo{margin-top:14px;background:#f8f6f1;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px;cursor:auto}
+.demo-tag{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#fff;background:var(--panda);padding:4px 12px;border-radius:99px;margin-bottom:11px}
+.demo-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 6px rgba(226,97,27,.8);animation:blink 1.6s ease infinite}
+@keyframes blink{50%{opacity:.35}}
+.demo .dhint{font-size:12px;color:var(--muted);margin:-6px 0 10px}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.btn-go{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--corten),var(--ember));border:none;border-radius:8px;padding:9px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(226,97,27,.3);font-family:inherit}
+.btn-go:hover{filter:brightness(1.08)}
+.btn-go:disabled{opacity:.55;cursor:wait}
+
+/* kenniskaart — generiek */
+.kcard{background:#fff;border:1px solid #e7e2d8;border-radius:9px;border-left:3px solid var(--ember);padding:10px 12px}
+.kcard .kt{font-size:12.5px;font-weight:750;margin-bottom:3px}
+.kcard .kb{font-size:11.5px;color:#4a463f;line-height:1.5}
+.kcard .ksrc{font-size:10px;color:var(--muted);margin-top:6px}
+
+/* demo1 — oogsten */
+.t3d1-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.srcbox,.harvbox{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 12px}
+.srcbox .bh,.harvbox .bh{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.srcitem{display:flex;gap:8px;align-items:center;font-size:12px;padding:6px 8px;border:1px solid #eee7db;border-radius:7px;margin-bottom:6px;background:#f8f6f1}
+.srcitem:last-child{margin-bottom:0}
+.srcitem .ic{flex:none;width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800}
+.srcitem .doc{background:#3b7bd0}.srcitem .sheet{background:#1e9e5a}.srcitem .clk{background:#7a5cd0}.srcitem .mail{background:#4a4f57}
+.srcitem.harv{opacity:.4}
+.harvbox .empty{color:var(--muted);font-size:12px;text-align:center;padding:26px 8px}
+.harvcards{display:flex;flex-direction:column;gap:8px}
+
+/* demo2 — grill me */
+.t3d2-topics{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.topbtn{font-size:12px;font-weight:650;border:1.5px solid #e2ddd2;background:#fff;border-radius:99px;padding:6px 13px;cursor:pointer;font-family:inherit}
+.topbtn.act{border-color:var(--ember);color:var(--pos);background:#fbe9dc}
+.t3d2-out{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.intv{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 12px}
+.intv .bh{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.iturn{font-size:12px;line-height:1.5;padding:7px 9px;border-radius:8px;margin-bottom:6px}
+.iturn.claude{background:#eef0f2;color:#2c2e33}
+.iturn.wout{background:#fbf2e9;color:#4a3f34}
+.iturn b{font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;display:block;opacity:.7;margin-bottom:2px}
+
+/* demo3 — vraagbaak */
+.searchbar{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e2ddd2;border-radius:10px;padding:9px 13px;font-size:13px;color:var(--muted);margin-bottom:10px}
+.searchbar svg{flex:none}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.chip{font-size:11.5px;font-weight:600;border:1px solid #e2ddd2;background:#fff;border-radius:99px;padding:5px 11px;cursor:pointer;font-family:inherit}
+.chip:hover{border-color:var(--ember);color:var(--pos)}
+.chip.act{border-color:var(--ember);color:var(--pos);background:#fbe9dc}
+.ans{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:12px 14px;min-height:70px;font-size:12.5px;line-height:1.55}
+.ans .empty{color:var(--muted);text-align:center;padding:16px 4px}
+.ans .src{display:inline-block;font-size:10.5px;color:var(--pos);background:#fbe9dc;border-radius:99px;padding:2px 9px;margin-top:8px}
+.rt-toggle{display:inline-flex;background:#eceae3;border-radius:99px;padding:3px;margin:12px 0 4px}
+.rt-toggle button{font-size:12px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:99px;padding:5px 14px;cursor:pointer;font-family:inherit}
+.rt-toggle button.act{background:var(--ember);color:#fff}
+.rt-note{font-size:11.5px;color:var(--muted);margin-top:6px}
+.rt-note b{color:var(--text)}
+
+/* demo4 — kennisgaten */
+.gaphead{font-size:12px;color:#4a463f;margin-bottom:10px}
+.gapitem{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:9px 12px;margin-bottom:8px}
+.gapitem .gq{flex:1;font-size:12px}
+.gapitem .gq small{display:block;color:var(--muted);font-size:10.5px;margin-top:1px}
+.gapitem .src2{flex:none;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--steel);background:#eceef0;border-radius:99px;padding:2px 8px}
+.btn-close{flex:none;font-size:11.5px;font-weight:700;color:#fff;background:var(--panda);border:none;border-radius:7px;padding:7px 12px;cursor:pointer;font-family:inherit}
+.btn-close:hover{background:#000}
+.gapitem.done{opacity:.6}
+.gapitem.done .btn-close{background:#2e7d43}
+.gapcount{font-size:11.5px;color:var(--muted);margin-top:6px}
+
+.d-note{font-size:11.5px;color:var(--muted);margin-top:11px;border-top:1px dashed #e0dbd0;padding-top:9px}
+.d-note b{color:var(--text);font-weight:650}
+.note{background:var(--card);border-radius:var(--radius);padding:13px 18px;box-shadow:0 1px 3px rgba(28,22,14,.08);font-size:13px;color:var(--muted);margin-bottom:var(--gap);border-left:3px solid var(--ember)}
+.note b{color:var(--text);font-weight:650}
+footer{color:var(--muted);font-size:12px;padding:4px 4px 22px}
+
+@media(max-width:860px){
+  .vs{grid-template-columns:1fr}
+  .mid{flex-direction:row;padding:10px 0;gap:12px}
+  .mid .arrow{transform:rotate(90deg)}
+  .ladder{grid-template-columns:1fr}
+  header.top h1{font-size:20px}
+  .t3d1-wrap{grid-template-columns:1fr}
+  .t3d2-out{grid-template-columns:1fr}
+}
+@media(max-width:560px){ .duomark{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="demo-banner"><b>Schetsversie</b> — de kaarten en voorbeelden hieronder zijn illustratief. Zodra we Wouts echte docs, sheets en een paar praatsessies oogsten, staat hier de echte bedrijfskennis.</div>
+
+  <header class="top">
+    <div class="duomark" aria-hidden="true">
+      <svg width="26" height="24" viewBox="0 0 26 24">
+        <circle cx="6" cy="5" r="4" fill="#0e0f10"/><circle cx="20" cy="5" r="4" fill="#0e0f10"/>
+        <circle cx="13" cy="13" r="10" fill="#f7f5f1"/>
+        <ellipse cx="9" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(-15 9 12)"/>
+        <ellipse cx="17" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(15 17 12)"/>
+        <circle cx="13" cy="16.5" r="1.4" fill="#0e0f10"/>
+      </svg>
+      <span class="x">×</span>
+      <svg width="19" height="23" viewBox="0 0 20 24">
+        <path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#e2611b"/>
+        <path d="M10 22.6a3.4 3.4 0 0 0 3.4-3.4c0-2.1-1.9-3.1-3.4-5.2-1.5 2.1-3.4 3.1-3.4 5.2a3.4 3.4 0 0 0 3.4 3.4z" fill="#f7b26b"/>
+      </svg>
+    </div>
+    <div class="crumb">PakketPanda &amp; ASH Grill &amp; Heat · Thema 3 van 7</div>
+    <h1>Het bedrijfsgeheugen</h1>
+    <div class="sub">Het minst spannende thema, en het belangrijkste: de kennis uit de hoofden en de losse systemen halen, in één doorzoekbare bibliotheek. Het fundament waar de assistenten uit thema 1 en 2 op staan.</div>
+    <div class="themes">
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%201%20visueel%20(bestelling%20tot%20deurmat).html">1 · Bestelling tot deurmat</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%202%20visueel%20(klantcontact).html">2 · Klantcontact</a>
+      <span class="theme-chip active">3 · Bedrijfsgeheugen</span>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%204%20visueel%20(groei%20en%20merk).html">4 · Groei &amp; merk</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%205%20visueel%20(sturing%20en%20signalen).html">5 · Sturing &amp; signalen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%206%20visueel%20(geld%20marge%20en%20cashflow).html">6 · Geld, marge &amp; cashflow</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%207%20visueel%20(leveranciers%20en%20contracten).html">7 · Leveranciers &amp; contracten</a>
+    </div>
+  </header>
+
+  <div class="systems">
+    <div class="lock" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23252a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <div class="txt"><b>De bestaande bronnen blijven staan.</b> De bibliotheek oogst eruit en houdt zichzelf actueel — ze vervangt niets, ze ontsluit.</div>
+    <div class="sysbadges">
+      <span class="sysbadge">Google Docs</span>
+      <span class="sysbadge">Sheets</span>
+      <span class="sysbadge">ClickUp</span>
+      <span class="sysbadge">Gmail-templates</span>
+    </div>
+  </div>
+
+  <div class="vs-head">
+    <h2>Zaterdag — en Wout is er niet</h2>
+    <span class="hint">een nieuwe kracht, een simpele vraag: dit is het verschil</span>
+    <button class="replay" onclick="playAnim()">↺ Speel opnieuw af</button>
+  </div>
+
+  <section class="vs">
+    <div class="pane now">
+      <span class="tag">Status quo</span>
+      <h3>De kennis zit in twee hoofden</h3>
+      <div class="sub">Zo gaat een vraag van een nieuwe kracht nu.</div>
+      <div class="steps" id="now-steps">
+        <div class="step"><span class="n">1</span><div class="b"><b>De zaterdagkracht loopt vast</b> bij een beschadigde vuurschaal — wat nu?</div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">2</span><div class="b"><b>"Mag ik je heel even wat vragen?"</b> — appje of belletje naar Wout. <span class="risk">onderbreking</span></div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">3</span><div class="b"><b>Wout legt zijn werk neer</b> om het uit te leggen. Elke vakantie is spannend.</div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">2</div><div class="k">hoofden waar de kennis in zit</div></div>
+        <div class="pay"><div class="v">?</div><div class="k">elke nieuwe kracht kost Wout tijd</div></div>
+        <div class="pay"><div class="v">0</div><div class="k">overdraagbaar: niets staat vast</div></div>
+      </div>
+    </div>
+
+    <div class="mid" id="mid">
+      <div class="count"><span class="from">8×</span> <span style="color:var(--muted);font-size:16px">→</span> <span class="to">0</span></div>
+      <div class="arrow">➜</div>
+      <div class="lbl">van acht keer storen<br>naar nul — het staat<br>in de vraagbaak</div>
+    </div>
+
+    <div class="pane next">
+      <span class="tag">Straks</span>
+      <h3>Ze typt de vraag, en krijgt het antwoord</h3>
+      <div class="sub">Uit de bedrijfsbibliotheek — Wout merkt er niets van.</div>
+      <div class="steps">
+        <div class="step" id="next-step1"><span class="n">1</span><div class="b"><b>"Wat doen we bij transportschade ASH?"</b> — ze typt het gewoon in.</div></div>
+      </div>
+      <div class="autos" id="autos">
+        <div class="auto"><span class="chk">✓</span><div>Het stappenplan verschijnt: foto's, formulier, wie het label betaalt, welke toon <span class="who">· vraagbaak</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Mét verwijzing naar de bron-kaart — je kunt het controleren <span class="who">· vraagbaak</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div><b>Wout wordt niet gestoord</b> — en het antwoord is elke keer hetzelfde <span class="who">· vraagbaak</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Staat het antwoord er niet? Dan wordt het een kennisgat dat we dichten <span class="who">· vraagbaak</span></div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">inwerkbaar</div><div class="k">het bedrijf wordt overdraagbaar</div></div>
+        <div class="pay"><div class="v">1 bron</div><div class="k">mens, mail-assistent én chatbot uit dezelfde kaart</div></div>
+        <div class="pay"><div class="v">gelijk</div><div class="k">iedereen geeft hetzelfde, juiste antwoord</div></div>
+      </div>
+      <div class="teller" id="teller">
+        <div class="t">En het groeit mee — kennisgaten deze week (voorbeeld)</div>
+        <div class="tellerrow"><span class="cnt">5</span><span class="bar" style="width:0" data-w="55%"></span><span>gevonden uit mail &amp; telefoon</span></div>
+        <div class="tellerrow dim"><span class="cnt">5</span><span class="bar" style="width:0" data-w="55%"></span><span>gedicht — nieuwe kaarten toegevoegd</span></div>
+        <div class="insight"><b>De truc:</b> de bibliotheek hoeft niet vooraf compleet te zijn. Elke vraag zonder antwoord wordt een klein gat dat we dichten. Zo groeit het geheugen mee met de praktijk in plaats van te verouderen.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ladder-head">
+    <h2>De ladder — klein beginnen, opbouwen wat werkt</h2>
+    <p>Van kruipen via lopen naar rennen. De kennis hoeft niet uitgetypt te worden — dat is de truc. <b>Klik op een trede</b> voor wat het doet, wat ervoor nodig is, de bouwtijd — én een klikbare mini-demo.</p>
+  </div>
+
+  <section class="ladder">
+
+    <!-- TREDE 1 — oogsten -->
+    <div class="tread" data-lvl="kruip" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Kruipen</span>
+        <h4>Oogsten wat er al is</h4>
+        <div class="oneliner">Bestaande docs, sheets en templates worden vanzelf korte, doorzoekbare kaarten.</div>
+        <div class="meta"><span class="pill">±1 sprint</span><span class="pill">eerste set in één weekend</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Alle bestaande Google Docs, Sheets, ClickUp-notities en Gmail-templates worden automatisch omgezet naar korte kaarten van een halve pagina. Geen dik handboek dat niemand leest — losse kaarten die je vindt door gewoon een vraag te stellen. De eerste set staat er in één weekend.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Leestoegang tot de relevante Docs, Sheets en ClickUp</li>
+            <li>De Gmail-templates</li>
+            <li>Verder niets: het is oogsten van wat al bestaat</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1 sprint; de eerste kaartenset in één weekend.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Links staat wat er nu verspreid ligt. Druk op oogsten — de assistent maakt er doorzoekbare kaarten van.</p>
+            <div class="t3d1-wrap">
+              <div class="srcbox">
+                <div class="bh">Wat er nu verspreid ligt</div>
+                <div class="srcitem" id="s-doc"><span class="ic doc">D</span>Google Doc — Retourbeleid.docx</div>
+                <div class="srcitem" id="s-sheet"><span class="ic sheet">S</span>Sheet — Partneradressen</div>
+                <div class="srcitem" id="s-clk"><span class="ic clk">C</span>ClickUp — Inpakinstructie Classic XXL</div>
+                <div class="srcitem" id="s-mail"><span class="ic mail">M</span>Gmail-template — "Levertijd"</div>
+              </div>
+              <div class="harvbox">
+                <div class="bh">De bedrijfsbibliotheek</div>
+                <div id="t3d1-cards"><div class="empty">Nog leeg — druk op oogsten →</div></div>
+              </div>
+            </div>
+            <button class="btn-go" id="t3d1-go" style="margin-top:12px" onclick="t3d1Run()">Oogst naar kaarten</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 2 — grill me -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>Praten in plaats van typen</h4>
+        <div class="oneliner">Voor wat in hoofden zit: opgenomen praatsessies worden vanzelf kaarten.</div>
+        <div class="meta"><span class="pill">±0,5 sprint per set</span><span class="pill">Wout vertelt, Claude schrijft</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Voor alles wat alleen in hoofden zit doen we opgenomen sessies van een half uur — "loop me eens door een retour heen". De opname wordt automatisch uitgeschreven (zelfde techniek als de gesprekkenluisteraar uit thema 2) en tot kaarten verwerkt. Wout hoeft alleen te vertellen en achteraf te checken.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>2–3 opgenomen sessies van een half uur met Wout (en evt. een medewerker)</li>
+            <li>Whisper voor de transcriptie</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5 sprint per set opnames.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Kies een onderwerp. Je ziet het opgenomen gesprek uitgeschreven — en de kaart die eruit rolt.</p>
+            <div class="t3d2-topics">
+              <button class="topbtn act" id="tp-retour" onclick="t3d2Pick('retour')">Retour</button>
+              <button class="topbtn" id="tp-labels" onclick="t3d2Pick('labels')">Labelkeuze</button>
+              <button class="topbtn" id="tp-partners" onclick="t3d2Pick('partners')">Partners</button>
+            </div>
+            <div class="t3d2-out">
+              <div class="intv" id="t3d2-intv"></div>
+              <div id="t3d2-card"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 3 — vraagbaak -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De vraagbaak — één bron van waarheid</h4>
+        <div class="oneliner">Stel een vraag, krijg het antwoord mét bron. Pas één regel aan en alles volgt.</div>
+        <div class="meta"><span class="pill">±1 sprint</span><span class="pill">voedt thema 1 &amp; 2</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Op de bibliotheek komt een zoekvenster dat vragen begrijpt: typ "klant wil Solaris retour, wie betaalt verzending?" en je krijgt het antwoord mét verwijzing naar de bron-kaart. Dezelfde vraagbaak is straks óók waar de mail-assistent en de chatbot hun antwoorden vandaan halen. Eén bron van waarheid: pas je één regel aan, dan antwoordt alles volgens de nieuwe regel.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Semantische zoek (RAG) op eigen infrastructuur</li>
+            <li>De geoogste kaarten uit trede 1 en 2</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Kies een vraag zoals een medewerker die zou stellen. Let op de bron. En verzet daarna de retourtermijn — het antwoord verandert meteen, overal.</p>
+            <div class="searchbar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9aa0a8" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <span id="t3d3-typed">Stel een vraag aan het bedrijfsgeheugen…</span>
+            </div>
+            <div class="chips">
+              <button class="chip act" id="c-solaris" onclick="t3d3Ask('solaris',this)">Klant wil Solaris retour — wie betaalt verzending?</button>
+              <button class="chip" id="c-classic" onclick="t3d3Ask('classic',this)">Past de Classic XXL op een smalle muur?</button>
+              <button class="chip" id="c-partner" onclick="t3d3Ask('partner',this)">Wat is het adres van onze pallet-partner?</button>
+            </div>
+            <div class="ans" id="t3d3-ans"><div class="empty">Kies een vraag hierboven</div></div>
+            <div class="rt-toggle">
+              <button class="act" id="rt-14" onclick="t3d3Rt(14,this)">Retourtermijn 14 dagen</button>
+              <button id="rt-30" onclick="t3d3Rt(30,this)">Retourtermijn 30 dagen</button>
+            </div>
+            <div class="rt-note"><b>Eén bron van waarheid:</b> je verzet de regel hier één keer — en de vraagbaak, de mail-assistent én de chatbot antwoorden vanaf dat moment volgens de nieuwe termijn.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 4 — zelf-actueel -->
+    <div class="tread" data-lvl="ren" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Rennen</span>
+        <h4>Vanzelf actueel blijven</h4>
+        <div class="oneliner">Vragen zonder antwoord worden kennisgaten — en die dichten we wekelijks.</div>
+        <div class="meta"><span class="pill">doorlopend, klein</span><span class="pill">leert van thema 2</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>De gesprekkenluisteraar en de mail-assistent uit thema 2 signaleren vragen waar de bibliotheek nog géén antwoord op heeft. Dat wordt een klein "kennisgaten"-lijstje dat wekelijks wordt bijgewerkt, plus een maandelijkse opschoonronde. Zo groeit het systeem mee met de praktijk in plaats van te verouderen — het wordt beter naarmate je het gebruikt.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Koppeling met de signalen uit thema 2 (mail + telefoon)</li>
+            <li>Een halfuurtje per week, de eerste maand — daarna zakt dat in</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>Doorlopend en klein; het draait mee zodra thema 2 er staat.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Deze vragen kwamen deze week binnen zonder dat de bibliotheek een antwoord had. Dicht ze — elk wordt een nieuwe kaart.</p>
+            <div class="gaphead">Kennisgaten — automatisch gevonden uit mail &amp; telefoon</div>
+            <div class="gapitem" id="gap1">
+              <div class="gq">"Leveren jullie ook naar Duitse eilanden?"<small>3× gevraagd via mail deze week</small></div>
+              <span class="src2">mail</span>
+              <button class="btn-close" onclick="t3d4Close(this)">Dicht dit gat</button>
+            </div>
+            <div class="gapitem" id="gap2">
+              <div class="gq">"Kan de Aurora-hoes los besteld worden?"<small>2× gevraagd via telefoon</small></div>
+              <span class="src2">telefoon</span>
+              <button class="btn-close" onclick="t3d4Close(this)">Dicht dit gat</button>
+            </div>
+            <div class="gapitem" id="gap3">
+              <div class="gq">"Geldt garantie ook op de poedercoating?"<small>2× gevraagd via chat</small></div>
+              <span class="src2">chat</span>
+              <button class="btn-close" onclick="t3d4Close(this)">Dicht dit gat</button>
+            </div>
+            <div class="gapcount" id="t3d4-count">0 van 3 gedicht — elk gedicht gat wordt meteen een doorzoekbare kaart.</div>
+            <div class="d-note"><b>Waarom dit het systeem levend houdt:</b> je hoeft de bibliotheek nooit "af" te maken. Wat klanten écht vragen bepaalt vanzelf waar de kennis groeit.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="note"><b>Waarom dit het minst spannende en meest belangrijke thema is:</b> zonder deze kaarten blijft elke assistent gokken. Mét dit thema citeren de nazend-assistent (thema 1), de mail-assistent en de chatbot (thema 2) allemaal hetzelfde bedrijfsbeleid — uit één bron.</div>
+
+  <footer>Thema 3 van 7 · gebouwd voor Wout · illustratieve kaarten, echte opzet · werkt volledig offline · Google Docs, Sheets, ClickUp en de Gmail-templates blijven exact zoals ze zijn</footer>
+</div>
+
+<script>
+function toggle(card){
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.tread.open').forEach(t=>{
+    t.classList.remove('open');
+    t.querySelector('.more').textContent='Bekijk detail ▾';
+  });
+  if(!wasOpen){
+    card.classList.add('open');
+    card.querySelector('.more').textContent='Verberg detail ▴';
+  }
+}
+
+let animTimers=[];
+function playAnim(){
+  animTimers.forEach(clearTimeout); animTimers=[];
+  const nowSteps=document.querySelectorAll('#now-steps .step');
+  const autos=document.querySelectorAll('#autos .auto');
+  const step1=document.getElementById('next-step1');
+  const teller=document.getElementById('teller');
+  const mid=document.getElementById('mid');
+  nowSteps.forEach(s=>s.classList.remove('on'));
+  autos.forEach(a=>a.classList.remove('on'));
+  step1.classList.remove('on'); teller.classList.remove('on'); mid.classList.remove('play');
+  document.querySelectorAll('#teller .bar').forEach(b=>b.style.width='0');
+  let t=300;
+  nowSteps.forEach(s=>{animTimers.push(setTimeout(()=>s.classList.add('on'),t)); t+=550;});
+  animTimers.push(setTimeout(()=>mid.classList.add('play'),t)); t+=500;
+  animTimers.push(setTimeout(()=>step1.classList.add('on'),t)); t+=550;
+  autos.forEach(a=>{animTimers.push(setTimeout(()=>a.classList.add('on'),t)); t+=350;});
+  animTimers.push(setTimeout(()=>{
+    teller.classList.add('on');
+    document.querySelectorAll('#teller .bar').forEach(b=>b.style.width=b.dataset.w);
+  },t+250));
+}
+
+/* ============ demo 1 — oogsten ============ */
+const T3D1=[
+  {src:'s-doc',kt:'Retourbeleid — herroeping',kb:'Binnen 14 dagen, ongebruikt: retourlabel volgens beleid, terugbetaling na controle binnen 5 werkdagen.',ksrc:'bron: Google Doc — Retourbeleid'},
+  {src:'s-sheet',kt:'Partneradressen',kb:'Pallet-partner Van Dijk Logistiek, Rotterdam. Ophaal op werkdagen vóór 14:00.',ksrc:'bron: Sheet — Partneradressen'},
+  {src:'s-clk',kt:'Inpakinstructie Classic XXL',kb:'Let op: sleutelset apart bijvoegen — hier gaat het vaakst mis (zie nazend-teller thema 1).',ksrc:'bron: ClickUp — Inpakinstructie'},
+  {src:'s-mail',kt:'Levertijd — standaardantwoord',kb:'Voor 21:00 besteld = morgen in huis (NL). België +1 werkdag. In vier talen beschikbaar.',ksrc:'bron: Gmail-template "Levertijd"'}
+];
+let t3d1Timers=[];
+function t3d1Run(){
+  t3d1Timers.forEach(clearTimeout); t3d1Timers=[];
+  const btn=document.getElementById('t3d1-go');
+  const wrap=document.getElementById('t3d1-cards');
+  btn.disabled=true; btn.textContent='Oogsten…';
+  wrap.innerHTML='<div class="harvcards"></div>';
+  const cont=wrap.querySelector('.harvcards');
+  document.querySelectorAll('.srcitem').forEach(s=>s.classList.remove('harv'));
+  let t=250;
+  T3D1.forEach(c=>{
+    t3d1Timers.push(setTimeout(()=>{
+      document.getElementById(c.src).classList.add('harv');
+      cont.insertAdjacentHTML('beforeend','<div class="kcard" style="animation:fadein .4s ease"><div class="kt">'+c.kt+'</div><div class="kb">'+c.kb+'</div><div class="ksrc">'+c.ksrc+'</div></div>');
+    },t));
+    t+=550;
+  });
+  t3d1Timers.push(setTimeout(()=>{btn.disabled=false; btn.textContent='Opnieuw oogsten';},t));
+}
+
+/* ============ demo 2 — grill me ============ */
+const T3D2={
+  retour:{intv:[['Claude','Loop me eens door een retour bij transportschade heen — wat doe je als eerste?'],['Wout','Ik vraag altijd eerst foto\'s op. Dan vul ik het schadeformulier van de vervoerder in, en het retour- én vervangingslabel betalen wij.']],
+    kt:'Draaiboek — transportschade',kb:'1) Foto\'s opvragen · 2) Schadeformulier vervoerder · 3) Retour + vervanging, kosten voor ons · 4) Snelle vervanging aanbieden.',ksrc:'bron: praatsessie Wout, transcript'},
+  labels:{intv:[['Claude','Hoe kies je het labeltype bij een nazending?'],['Wout','Een sleutel gaat als digitale postzegel, een scharnierset past door de brievenbus, en een deurtje is een normaal pakket. Zit eigenlijk in mijn hoofd.']],
+    kt:'Labelbeslisregels nazending',kb:'Sleutel/klein → digitale postzegel · scharnier/montageset → brievenbuspakket · deurtje/groot → normaal pakket.',ksrc:'bron: praatsessie Wout, transcript'},
+  partners:{intv:[['Claude','Met welke partners werk je voor de grote zendingen?'],['Wout','Van Dijk in Rotterdam voor pallets, ophalen kan tot 14:00. En voor de containers loopt het via onze vaste agent.']],
+    kt:'Partners & afspraken',kb:'Pallets: Van Dijk Logistiek, Rotterdam, ophaal vóór 14:00. Containers via vaste transport-agent (zie thema 7).',ksrc:'bron: praatsessie Wout, transcript'}
+};
+function t3d2Pick(k){
+  ['retour','labels','partners'].forEach(id=>document.getElementById('tp-'+id).classList.toggle('act',id===k));
+  const d=T3D2[k];
+  let iv='<div class="bh">Opgenomen gesprek — uitgeschreven</div>';
+  d.intv.forEach(l=>iv+='<div class="iturn '+(l[0]==='Wout'?'wout':'claude')+'"><b>'+l[0]+'</b>'+l[1]+'</div>');
+  document.getElementById('t3d2-intv').innerHTML=iv;
+  document.getElementById('t3d2-card').innerHTML='<div class="kcard" style="animation:fadein .4s ease"><div class="kt">'+d.kt+'</div><div class="kb">'+d.kb+'</div><div class="ksrc">'+d.ksrc+'</div></div>';
+}
+
+/* ============ demo 3 — vraagbaak ============ */
+let t3d3Term=14, t3d3Cur='solaris';
+const T3D3={
+  solaris:{q:'Klant wil Solaris retour — wie betaalt verzending?',
+    ans:t=>'Bij herroeping binnen <b>'+t+' dagen</b> (ongebruikt): de klant betaalt de retourzending, tenzij het product defect of verkeerd geleverd is — dan betalen wij. Terugbetaling na ontvangst en controle.',
+    src:'bron: kaart Retourbeleid'},
+  classic:{q:'Past de Classic XXL op een smalle muur?',
+    ans:()=>'De Classic XXL is 34 cm breed en past op elke muur vanaf ±35 cm. Montagemateriaal en boorsjabloon zitten erbij.',
+    src:'bron: kaart Productspec Classic XXL'},
+  partner:{q:'Wat is het adres van onze pallet-partner?',
+    ans:()=>'Van Dijk Logistiek, Rotterdam. Ophalen op werkdagen vóór 14:00; aanmelden via het vaste formulier.',
+    src:'bron: kaart Partneradressen'}
+};
+function t3d3Ask(k,btn){
+  t3d3Cur=k;
+  document.querySelectorAll('.chips .chip').forEach(c=>c.classList.remove('act'));
+  btn.classList.add('act');
+  t3d3Render();
+}
+function t3d3Rt(n,btn){
+  t3d3Term=n;
+  document.getElementById('rt-14').classList.toggle('act',n===14);
+  document.getElementById('rt-30').classList.toggle('act',n===30);
+  t3d3Render();
+}
+function t3d3Render(){
+  const d=T3D3[t3d3Cur];
+  document.getElementById('t3d3-typed').textContent=d.q;
+  document.getElementById('t3d3-ans').innerHTML=d.ans(t3d3Term)+'<br><span class="src">'+d.src+'</span>';
+}
+
+/* ============ demo 4 — kennisgaten ============ */
+function t3d4Close(btn){
+  const item=btn.closest('.gapitem');
+  if(item.classList.contains('done'))return;
+  item.classList.add('done');
+  btn.textContent='✓ Kaart gemaakt';
+  const done=document.querySelectorAll('.gapitem.done').length;
+  document.getElementById('t3d4-count').textContent=done+' van 3 gedicht — elk gedicht gat werd meteen een doorzoekbare kaart.';
+}
+
+window.addEventListener('load',()=>{
+  setTimeout(playAnim,250);
+  t3d2Pick('retour');
+  t3d3Render();
+});
+</script>
+</body>
+</html>
