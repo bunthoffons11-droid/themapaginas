@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thema 2 — Klantcontact · PakketPanda &amp; ASH</title>
+<style>
+/* ============================================================
+   Huisstijl-combi PakketPanda × ASH Grill & Heat
+   Basisframe: PakketPanda (pandazwart/staalgrijs). Accent: ASH (ember/corten).
+   ============================================================ */
+:root{
+  --bg:#f3f0ea; --card:#ffffff; --header:#17181a;
+  --text:#22242a; --muted:#6f737b; --ondark:#f7f5f1;
+  --panda:#1c1e21; --steel:#4a4f57; --ember:#e2611b; --corten:#9a4a26;
+  --pos:#c9520f; --neg:#4a4f57; --risk:#a33d22; --warn:#8a5416;
+  --kruip:#26282c; --loop:#9a4a26; --ren:#e2611b;
+  --gap:16px; --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:var(--gap)}
+.demo-banner{background:#fdf2e6;border:1px solid #f0d4b2;color:var(--warn);border-radius:var(--radius);padding:8px 16px;font-size:13px;margin-bottom:var(--gap)}
+
+/* ---------- header ---------- */
+header.top{background:radial-gradient(circle at 90% 130%,rgba(226,97,27,.30),transparent 52%),radial-gradient(circle at 72% 160%,rgba(154,74,38,.22),transparent 45%),var(--header);color:var(--ondark);padding:20px 24px;border-radius:var(--radius);margin-bottom:var(--gap);position:relative;overflow:hidden;border-bottom:3px solid var(--ember)}
+.crumb{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9aa0a8;font-weight:600;margin-bottom:6px}
+header.top h1{font-size:24px;font-weight:800;line-height:1.25;letter-spacing:-.3px}
+header.top .sub{font-size:14px;color:#a9aeb6;margin-top:6px;max-width:760px}
+.duomark{position:absolute;top:20px;right:22px;display:flex;align-items:center;gap:9px;opacity:.92}
+.duomark .x{color:#7a7f87;font-size:13px;font-weight:600}
+.themes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.theme-chip{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#a9aeb6;background:rgba(255,255,255,.05);white-space:nowrap}
+.theme-chip.active{background:var(--ember);border-color:var(--ember);color:#fff;font-weight:600}
+a.theme-chip{text-decoration:none;color:#a9aeb6;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+a.theme-chip:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.42);color:#fff}
+a.theme-chip{text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+a.theme-chip:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.42);color:#fff}
+
+/* ---------- vaste systemen strip ---------- */
+.systems{background:var(--card);border-radius:var(--radius);padding:14px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);margin-bottom:var(--gap);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.systems .lock{flex:none;width:34px;height:34px;border-radius:9px;background:#eceef0;display:flex;align-items:center;justify-content:center}
+.systems .txt{font-size:13.5px;min-width:220px;flex:1}
+.systems .txt b{font-weight:650}
+.sysbadges{display:flex;gap:8px;flex-wrap:wrap}
+.sysbadge{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:8px;background:#f0f1f3;border:1px solid #e2e4e8;color:#3c4046;white-space:nowrap}
+
+/* ---------- van/naar hero ---------- */
+.vs-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:6px 4px 10px}
+.vs-head h2{font-size:17px;font-weight:750}
+.vs-head .hint{font-size:12.5px;color:var(--muted)}
+.replay{font-size:12.5px;font-weight:600;color:var(--pos);background:none;border:1px solid var(--ember);border-radius:99px;padding:4px 14px;cursor:pointer}
+.replay:hover{background:var(--ember);color:#fff}
+.vs{display:grid;grid-template-columns:1fr 108px 1fr;gap:0;align-items:stretch;margin-bottom:var(--gap)}
+.pane{background:var(--card);border-radius:var(--radius);padding:18px 20px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);position:relative;overflow:hidden}
+.pane.now{border-top:4px solid var(--steel)}
+.pane.next{border-top:4px solid var(--ember)}
+.pane .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:4px}
+.pane.now .tag{background:#eceef0;color:var(--steel)}
+.pane.next .tag{background:#fbe9dc;color:var(--pos)}
+.pane h3{font-size:15.5px;font-weight:750;margin-bottom:2px}
+.pane .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 10px;border-radius:8px;opacity:.35;transform:translateX(-6px);transition:opacity .5s ease,transform .5s ease,background .3s}
+.step.on{opacity:1;transform:none}
+.step .n{flex:none;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pane.now .step .n{background:#eceef0;color:#3d4148}
+.pane.next .step .n{background:#fbe9dc;color:var(--pos)}
+.step .b{font-size:13.5px}
+.step .b b{font-weight:650}
+.step .b .risk{display:inline-block;font-size:11px;font-weight:600;color:var(--risk);background:#f7e7e0;border-radius:99px;padding:1px 9px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.connector{width:2px;height:14px;background:#e6e3dd;margin-left:22px}
+.autos{margin:10px 0 0 38px;display:flex;flex-direction:column;gap:6px}
+.auto{font-size:13px;color:#3f3a35;display:flex;gap:8px;align-items:flex-start;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease}
+.auto.on{opacity:1;transform:none}
+.auto .chk{flex:none;width:17px;height:17px;border-radius:50%;background:var(--ember);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px;font-weight:700;box-shadow:0 0 7px rgba(226,97,27,.45)}
+.auto .who{color:var(--muted);font-size:11.5px}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.mid .count{font-size:22px;font-weight:800;line-height:1.05;white-space:nowrap;text-align:center}
+.mid .count .from{color:var(--steel)}
+.mid .count .to{color:var(--pos)}
+.mid .arrow{font-size:22px;color:var(--ember);text-shadow:0 0 10px rgba(226,97,27,.35)}
+@keyframes pulse{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.mid.play .arrow{animation:pulse 1s ease infinite}
+.mid .lbl{font-size:11px;color:var(--muted);text-align:center;line-height:1.3}
+.paylines{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed #e6e3dd}
+.pay{font-size:12.5px}
+.pay .v{font-size:19px;font-weight:800}
+.pane.now .pay .v{color:#3f444b}
+.pane.next .pay .v{color:var(--pos)}
+.pay .k{color:var(--muted)}
+.teller{margin-top:16px;background:#fbf2e9;border:1px solid #efd9c2;border-radius:8px;padding:12px 14px;opacity:0;transform:translateY(6px);transition:opacity .5s ease .1s,transform .5s ease .1s}
+.teller.on{opacity:1;transform:none}
+.teller .t{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:8px}
+.tellerrow{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:6px}
+.tellerrow:last-child{margin-bottom:0}
+.tellerrow .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--corten),var(--ember));flex:none;transition:width .8s ease}
+.tellerrow.dim .bar{background:#ddb28d}
+.tellerrow .cnt{font-weight:700;flex:none;width:24px;text-align:right}
+.teller .insight{font-size:12.5px;color:#4a3f34;margin-top:9px;border-top:1px dashed #ecd3ba;padding-top:8px}
+.teller .insight b{font-weight:650}
+
+/* ---------- ladder ---------- */
+.ladder-head{margin:26px 4px 4px}
+.ladder-head h2{font-size:17px;font-weight:750}
+.ladder-head p{font-size:13.5px;color:var(--muted);max-width:820px;margin-top:3px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);align-items:end;margin-top:14px;margin-bottom:var(--gap)}
+.tread{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(28,22,14,.08);cursor:pointer;border:2px solid transparent;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden;display:flex;flex-direction:column}
+.tread:hover{transform:translateY(-3px);box-shadow:0 4px 14px rgba(28,22,14,.12)}
+.tread.open{border-color:currentColor}
+.tread.open:hover{transform:none}
+.tread .bar{height:5px}
+.tread[data-lvl="kruip"]{color:var(--kruip)} .tread[data-lvl="kruip"] .bar{background:var(--kruip)}
+.tread[data-lvl="loop"]{color:var(--loop)} .tread[data-lvl="loop"] .bar{background:var(--loop)}
+.tread[data-lvl="ren"]{color:var(--ren)} .tread[data-lvl="ren"] .bar{background:linear-gradient(90deg,var(--corten),var(--ember))}
+.tread .inner{padding:14px 16px 16px;color:var(--text)}
+.lvl{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;padding:2px 9px;border-radius:99px;margin-bottom:8px;color:#fff}
+.tread[data-lvl="kruip"] .lvl{background:var(--kruip)}
+.tread[data-lvl="loop"] .lvl{background:var(--loop)}
+.tread[data-lvl="ren"] .lvl{background:var(--ren)}
+.tread h4{font-size:14.5px;font-weight:750;line-height:1.3;margin-bottom:4px}
+.tread .oneliner{font-size:12.5px;color:var(--muted)}
+.tread .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pill{font-size:11px;font-weight:600;background:#f2f0ec;border-radius:99px;padding:2px 9px;color:#55585f;white-space:nowrap}
+.tread .more{font-size:11.5px;font-weight:600;margin-top:10px;color:currentColor}
+.tread .detail{display:none;border-top:1px solid #efece6;margin-top:12px;padding-top:12px;color:var(--text);cursor:auto}
+.tread.open .detail{display:block}
+.detail h5{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.detail h5:first-child{margin-top:0}
+.detail p,.detail li{font-size:12.5px}
+.detail ul{list-style:none}
+.detail li{padding-left:16px;position:relative;margin-bottom:3px}
+.detail li:before{content:"›";position:absolute;left:2px;color:currentColor;font-weight:700}
+@media(min-width:861px){
+  .ladder .tread:nth-child(1){margin-top:96px}
+  .ladder .tread:nth-child(2){margin-top:64px}
+  .ladder .tread:nth-child(3){margin-top:32px}
+  .ladder .tread:nth-child(4){margin-top:0}
+  .ladder{align-items:start}
+}
+.ladder .tread.open{grid-column:1 / -1}
+@media(min-width:861px){.ladder .tread.open{margin-top:0}}
+
+/* ---------- demo base ---------- */
+.demo{margin-top:14px;background:#f8f6f1;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px;cursor:auto}
+.demo-tag{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#fff;background:var(--panda);padding:4px 12px;border-radius:99px;margin-bottom:11px}
+.demo-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 6px rgba(226,97,27,.8);animation:blink 1.6s ease infinite}
+@keyframes blink{50%{opacity:.35}}
+.demo .dhint{font-size:12px;color:var(--muted);margin:-6px 0 10px}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.btn-go{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--corten),var(--ember));border:none;border-radius:8px;padding:9px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(226,97,27,.3);font-family:inherit}
+.btn-go:hover{filter:brightness(1.08)}
+.chan{flex:none;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:5px;padding:2px 7px;color:#fff}
+.chan.mail{background:#4a4f57}.chan.wa{background:#1f9d55}.chan.bol{background:#0a4ea2}.chan.amz{background:#e28018}.chan.tel{background:#9a4a26}
+.langtag{flex:none;font-size:9.5px;font-weight:800;letter-spacing:.6px;border-radius:99px;padding:2px 8px;background:#eceef0;color:var(--steel)}
+.langtag.fr{background:#e9eef7;color:#2a4a8a}
+.lblchip{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:99px;padding:2px 9px}
+.lblchip.order{background:#eceef0;color:var(--steel)}
+.lblchip.vraag{background:#e6eef0;color:#2f6d78}
+.lblchip.retour{background:#f3e7d9;color:var(--corten)}
+.lblchip.klacht,.lblchip.spoed{background:#f7e0d6;color:var(--risk)}
+
+/* demo1 — gesprekkenluisteraar */
+.t2d1-pick{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.recbtn{font-size:12px;font-weight:650;border:1.5px solid #e2ddd2;background:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit;text-align:left;line-height:1.35;transition:border-color .2s,box-shadow .2s}
+.recbtn small{display:block;color:var(--muted);font-weight:400;font-size:10.5px}
+.recbtn.act{border-color:var(--ember);box-shadow:0 2px 10px rgba(226,97,27,.16)}
+.t2d1-out{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
+.transcript{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 13px;font-size:12px;line-height:1.55}
+.transcript .th{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.transcript .line{margin-bottom:4px}.transcript .line b{font-weight:700}
+.summary{background:#fbf2e9;border:1px solid #efd9c2;border-radius:9px;padding:11px 13px}
+.summary .th{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--pos);margin-bottom:7px}
+.sumrow{font-size:12px;margin-bottom:6px}.sumrow:last-child{margin-bottom:0}
+.sumrow span{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+.topq{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 13px}
+.topq .th{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.qbar{display:flex;align-items:center;gap:9px;font-size:11.5px;margin-bottom:7px}
+.qbar .cnt{flex:none;width:20px;text-align:right;font-weight:700}
+.qbar .track{flex:1;background:#f0eee8;border-radius:6px;height:12px;overflow:hidden}
+.qbar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--corten),var(--ember))}
+.qbar .lab{flex:none;width:150px;color:#3f3a35}
+@media(max-width:640px){.qbar .lab{width:120px}}
+
+/* demo2 — mail-assistent */
+.t2d2{display:grid;grid-template-columns:minmax(200px,1fr) 1.3fr;gap:12px}
+.inbox{background:#fff;border:1px solid #e7e2d8;border-radius:9px;overflow:hidden}
+.inbox .ih{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:9px 12px;border-bottom:1px solid #eee7db;background:#f8f6f1}
+.mailitem{padding:9px 12px;border-bottom:1px solid #f0ece2;cursor:pointer;transition:background .15s}
+.mailitem:last-child{border-bottom:none}
+.mailitem:hover{background:#fbf5ee}
+.mailitem.act{background:#fbe9dc}
+.mailitem .mfrom{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.mailitem .msub{font-size:11.5px;color:#4a463f;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mdot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--ember)}
+.mailview{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px;min-height:150px}
+.mailview .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:34px 10px}
+.mvhead{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:9px}
+.mvfacts{background:#f8f6f1;border-radius:8px;padding:8px 11px;font-size:11.5px;line-height:1.6;margin-bottom:10px}
+.mvfacts span{color:var(--muted)}
+.mvlabelrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:9px;font-size:11.5px;color:var(--muted)}
+.mvconcept{background:#fdf9f4;border:1px dashed #e8d9c6;border-radius:8px;padding:9px 11px;font-size:12px;line-height:1.55;color:#3f3a35}
+.mvconcept .cl{font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:5px}
+.spoedbox{background:#f7e0d6;border-left:3px solid var(--risk);border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.55;color:#5c2a17}
+.spoedbox b{color:var(--risk)}
+.btn-ok{margin-top:10px;font-size:12.5px;font-weight:700;color:#fff;background:var(--panda);border:none;border-radius:8px;padding:9px 16px;cursor:pointer;font-family:inherit;transition:background .25s}
+.btn-ok:hover{background:#000}
+.btn-ok.done,.btn-ok.done:hover{background:#2e7d43;cursor:default}
+
+/* demo3 — chatbot */
+.chatwin{background:#fff;border:1px solid #e7e2d8;border-radius:12px;overflow:hidden;max-width:460px}
+.chathead{background:var(--panda);color:#fff;font-size:12px;font-weight:700;padding:9px 13px;display:flex;align-items:center;gap:8px}
+.chathead .g{flex:none;width:8px;height:8px;border-radius:50%;background:#3ddc84;box-shadow:0 0 6px #3ddc84}
+.chathead small{font-weight:400;color:#b9bdc4;margin-left:auto;font-size:10.5px}
+.chatbody{padding:12px;display:flex;flex-direction:column;gap:8px;min-height:120px;max-height:280px;overflow-y:auto}
+.bub{font-size:12.5px;line-height:1.5;padding:8px 11px;border-radius:12px;max-width:82%}
+.bub.bot{background:#f3f0ea;color:#2c2a26;border-bottom-left-radius:3px;align-self:flex-start}
+.bub.user{background:linear-gradient(135deg,var(--corten),var(--ember));color:#fff;border-bottom-right-radius:3px;align-self:flex-end}
+.bub .src{display:block;font-size:9.5px;color:var(--muted);margin-top:4px}
+.bub.esc{background:#fbe9dc;color:#7a3c12;border:1px dashed #e6b98f;align-self:stretch;max-width:100%;font-weight:600}
+.chatq{display:flex;gap:7px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid #f0ece2}
+.qq{font-size:11.5px;font-weight:600;border:1px solid #e2ddd2;background:#fff;border-radius:99px;padding:5px 11px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px}
+.qq:hover{border-color:var(--ember);color:var(--pos)}
+.qq:disabled{opacity:.45;cursor:default}
+
+/* demo4 — balie + telefonist */
+.t2d4{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.balie{background:#fff;border:1px solid #e7e2d8;border-radius:9px;overflow:hidden}
+.balie .bh{font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:9px 12px;border-bottom:1px solid #eee7db;background:#f8f6f1}
+.balieitem{display:flex;gap:8px;align-items:flex-start;padding:9px 12px;border-bottom:1px solid #f0ece2}
+.balieitem:last-child{border-bottom:none}
+.balieitem .bt{font-size:11.5px;line-height:1.4}
+.balieitem .bt b{font-weight:700}
+.balieitem .bt small{color:var(--muted);display:block;font-size:10.5px}
+.phone{background:#17181a;border-radius:12px;padding:13px 14px;color:#e9eaec}
+.phone .phh{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9aa0a8;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.phone .phh .liv{flex:none;width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 7px var(--ember)}
+.turn{font-size:12px;line-height:1.5;margin-bottom:8px;padding:7px 10px;border-radius:9px}
+.turn.klant{background:#26282c;color:#d6d8db}
+.turn.ai{background:linear-gradient(135deg,rgba(154,74,38,.5),rgba(226,97,27,.42));color:#fff}
+.turn b{font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;display:block;opacity:.75;margin-bottom:2px}
+.phact{font-size:11.5px;color:#f7b26b;margin-top:6px;border-top:1px solid #333;padding-top:8px}
+.d-note{font-size:11.5px;color:var(--muted);margin-top:11px;border-top:1px dashed #e0dbd0;padding-top:9px}
+.d-note b{color:var(--text);font-weight:650}
+
+/* ---------- note + footer ---------- */
+.note{background:var(--card);border-radius:var(--radius);padding:13px 18px;box-shadow:0 1px 3px rgba(28,22,14,.08);font-size:13px;color:var(--muted);margin-bottom:var(--gap);border-left:3px solid var(--ember)}
+.note b{color:var(--text);font-weight:650}
+footer{color:var(--muted);font-size:12px;padding:4px 4px 22px}
+
+@media(max-width:860px){
+  .vs{grid-template-columns:1fr}
+  .mid{flex-direction:row;padding:10px 0;gap:12px}
+  .mid .arrow{transform:rotate(90deg)}
+  .ladder{grid-template-columns:1fr}
+  header.top h1{font-size:20px}
+  .t2d1-out{grid-template-columns:1fr}
+  .t2d2{grid-template-columns:1fr}
+  .t2d4{grid-template-columns:1fr}
+}
+@media(max-width:560px){ .duomark{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="demo-banner"><b>Schetsversie</b> — alle cijfers en voorbeelden zijn illustratief: realistisch qua orde van grootte, maar nog geen echte meting. Zodra Wout zijn eigen inbox en opnames deelt, draait dit op zijn echte data.</div>
+
+  <header class="top">
+    <div class="duomark" aria-hidden="true">
+      <svg width="26" height="24" viewBox="0 0 26 24">
+        <circle cx="6" cy="5" r="4" fill="#0e0f10"/><circle cx="20" cy="5" r="4" fill="#0e0f10"/>
+        <circle cx="13" cy="13" r="10" fill="#f7f5f1"/>
+        <ellipse cx="9" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(-15 9 12)"/>
+        <ellipse cx="17" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(15 17 12)"/>
+        <circle cx="13" cy="16.5" r="1.4" fill="#0e0f10"/>
+      </svg>
+      <span class="x">×</span>
+      <svg width="19" height="23" viewBox="0 0 20 24">
+        <path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#e2611b"/>
+        <path d="M10 22.6a3.4 3.4 0 0 0 3.4-3.4c0-2.1-1.9-3.1-3.4-5.2-1.5 2.1-3.4 3.1-3.4 5.2a3.4 3.4 0 0 0 3.4 3.4z" fill="#f7b26b"/>
+      </svg>
+    </div>
+    <div class="crumb">PakketPanda &amp; ASH Grill &amp; Heat · Thema 2 van 7</div>
+    <h1>Klantcontact</h1>
+    <div class="sub">Mail, chat, telefoon, meertalig en marktplaats-berichten: wat er verandert als de inbox, de opnames en de chat een brein krijgen — zonder van systeem te wisselen, en zonder abonnement erbij.</div>
+    <div class="themes">
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%201%20visueel%20(bestelling%20tot%20deurmat).html">1 · Bestelling tot deurmat</a>
+      <span class="theme-chip active">2 · Klantcontact</span>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%203%20visueel%20(bedrijfsgeheugen).html">3 · Bedrijfsgeheugen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%204%20visueel%20(groei%20en%20merk).html">4 · Groei &amp; merk</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%205%20visueel%20(sturing%20en%20signalen).html">5 · Sturing &amp; signalen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%206%20visueel%20(geld%20marge%20en%20cashflow).html">6 · Geld, marge &amp; cashflow</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%207%20visueel%20(leveranciers%20en%20contracten).html">7 · Leveranciers &amp; contracten</a>
+    </div>
+  </header>
+
+  <div class="systems">
+    <div class="lock" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23252a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <div class="txt"><b>De bestaande systemen blijven onaangetast.</b> De assistenten lezen mee en bouwen eromheen — versturen blijft mensenwerk tot je zelf anders besluit.</div>
+    <div class="sysbadges">
+      <span class="sysbadge">Gmail</span>
+      <span class="sysbadge">Tidio</span>
+      <span class="sysbadge">VoIPZeker</span>
+      <span class="sysbadge">WhatsApp</span>
+    </div>
+  </div>
+
+  <div class="vs-head">
+    <h2>Dinsdagochtend, 09:00</h2>
+    <span class="hint">~60 mails per dag — dit is het verschil dat de inbox 's nachts maakt</span>
+    <button class="replay" onclick="playAnim()">↺ Speel opnieuw af</button>
+  </div>
+
+  <section class="vs">
+    <div class="pane now">
+      <span class="tag">Status quo</span>
+      <h3>Veertig ongelezen mails, elk met de hand</h3>
+      <div class="sub">Zo begint de ochtend nu — voor elke mail opnieuw.</div>
+      <div class="steps" id="now-steps">
+        <div class="step"><span class="n">1</span><div class="b"><b>Mail lezen</b> en bedenken wat het is: order, retour, vraag of klacht.</div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">2</span><div class="b"><b>Order opzoeken</b> in Picqer, track &amp; trace erbij zoeken. <span class="risk">schakelen tussen schermen</span></div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">3</span><div class="b"><b>Template kiezen, aanpassen</b>, soms even via losse ChatGPT formuleren — en pas dan versturen.</div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">~60</div><div class="k">mails per dag, stuk voor stuk handmatig</div></div>
+        <div class="pay"><div class="v">?</div><div class="k">Frans, Duits: extra vertaalslag</div></div>
+        <div class="pay"><div class="v">0</div><div class="k">meetbaar: volume, onderwerp, responstijd onbekend</div></div>
+      </div>
+    </div>
+
+    <div class="mid" id="mid">
+      <div class="count"><span class="from">40</span> <span style="color:var(--muted);font-size:18px">→</span> <span class="to">2</span></div>
+      <div class="arrow">➜</div>
+      <div class="lbl">van veertig te doen<br>naar twee die je aandacht vragen</div>
+    </div>
+
+    <div class="pane next">
+      <span class="tag">Straks</span>
+      <h3>De inbox heeft zichzelf al gesorteerd</h3>
+      <div class="sub">De mail-assistent leest mee — jij houdt de knop.</div>
+      <div class="steps">
+        <div class="step" id="next-step1"><span class="n">1</span><div class="b"><b>De assistent heeft 's nachts en 's ochtends meegelezen.</b> Jij opent één overzicht.</div></div>
+      </div>
+      <div class="autos" id="autos">
+        <div class="auto"><span class="chk">✓</span><div><b>12 al beantwoord</b> — tracking-vragen 's nachts automatisch correct afgehandeld <span class="who">· assistent</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div><b>6 concepten klaar</b> in de juiste taal en toon — één klik en weg <span class="who">· assistent</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div><b>2 spoed</b> (boze klant, kapot product) direct naar Wouts WhatsApp <span class="who">· assistent</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Alles gelabeld en geteld — voor het eerst <b>meetbaar</b> <span class="who">· assistent</span></div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">1 klik</div><div class="k">i.p.v. lezen, opzoeken, formuleren</div></div>
+        <div class="pay"><div class="v">4 talen</div><div class="k">NL/FR/DE/EN — concept in de taal van de klant</div></div>
+        <div class="pay"><div class="v">40 min</div><div class="k">gem. responstijd, nu zichtbaar en stuurbaar</div></div>
+      </div>
+      <div class="teller" id="teller">
+        <div class="t">En dan zie je opeens dit — top-vragen deze week (voorbeeld)</div>
+        <div class="tellerrow"><span class="cnt">24</span><span class="bar" style="width:0" data-w="60%"></span><span>levertijd — vooral de Aurora</span></div>
+        <div class="tellerrow dim"><span class="cnt">17</span><span class="bar" style="width:0" data-w="42%"></span><span>"past dit bij mij?" — montage &amp; maten</span></div>
+        <div class="tellerrow dim"><span class="cnt">11</span><span class="bar" style="width:0" data-w="28%"></span><span>retour &amp; ruilen</span></div>
+        <div class="insight"><b>Het signaal:</b> een kwart van alle vragen gaat over levertijd Aurora. Eén regel op de productpagina en één zin in de bevestigingsmail — en die stroom vragen droogt op. Dat zag je vorige maand nog niet.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ladder-head">
+    <h2>De ladder — klein beginnen, opbouwen wat werkt</h2>
+    <p>Van kruipen via lopen naar rennen. Elke trede bouwt op de vorige; de onderste trede vraagt geen enkele gedragsverandering, want de data ligt er al. <b>Klik op een trede</b> voor wat het doet, wat ervoor nodig is, de bouwtijd — én een klikbare mini-demo om het zelf te proberen.</p>
+  </div>
+
+  <section class="ladder">
+
+    <!-- ===== TREDE 1 — gesprekkenluisteraar ===== -->
+    <div class="tread" data-lvl="kruip" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Kruipen</span>
+        <h4>De gesprekkenluisteraar</h4>
+        <div class="oneliner">Elke belopname wordt tekst en samenvatting — de eerlijkste data die het bedrijf al heeft.</div>
+        <div class="meta"><span class="pill">±0,5 sprint</span><span class="pill">nul gedragsverandering</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Elk telefoongesprek wordt nu al opgenomen en als audio gemaild — en daar gebeurt niets mee. Deze luisteraar schrijft elke opname automatisch uit en vat hem samen: onderwerp, vraag, gemaakte afspraak. Vanaf dan kun je zoeken in je telefoongesprekken ("wat hebben we De&nbsp;Vries beloofd?") en zie je per week de top-vragen. Meteen gratis brandstof voor het bedrijfsgeheugen (thema 3) en de mailflows (thema 4).</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Een week aan belopname-mails als testset</li>
+            <li>Transcriptie via Whisper — lokaal en gratis</li>
+            <li>Verder niets: de opnames bestaan al</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5 sprint (4–6 u).</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Kies een opgenomen gesprek van deze week. De luisteraar toont het transcript én de samenvatting — en telt onderaan de vragen van de hele week bij elkaar op.</p>
+            <div class="t2d1-pick">
+              <button class="recbtn act" id="rec1" onclick="t2d1Pick('r1')">☎ Gesprek 09:12<small>3:41 · inkomend</small></button>
+              <button class="recbtn" id="rec2" onclick="t2d1Pick('r2')">☎ Gesprek 11:05<small>2:18 · inkomend</small></button>
+              <button class="recbtn" id="rec3" onclick="t2d1Pick('r3')">☎ Gesprek 14:33<small>4:07 · inkomend</small></button>
+            </div>
+            <div class="t2d1-out">
+              <div class="transcript" id="t2d1-tr"></div>
+              <div class="summary" id="t2d1-sum"></div>
+            </div>
+            <div class="topq">
+              <div class="th">Top-vragen deze week — automatisch geteld uit alle gesprekken</div>
+              <div class="qbar"><span class="cnt">24</span><span class="lab">Levertijd (Aurora)</span><span class="track"><span class="fill" style="width:100%"></span></span></div>
+              <div class="qbar"><span class="cnt">17</span><span class="lab">Past dit / montage</span><span class="track"><span class="fill" style="width:71%"></span></span></div>
+              <div class="qbar"><span class="cnt">11</span><span class="lab">Retour &amp; ruilen</span><span class="track"><span class="fill" style="width:46%"></span></span></div>
+              <div class="qbar"><span class="cnt">7</span><span class="lab">Betaling / factuur</span><span class="track"><span class="fill" style="width:29%"></span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TREDE 2 — mail-assistent ===== -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De mail-assistent</h4>
+        <div class="oneliner">Leest mee, labelt, zoekt de feiten en zet een concept klaar — óók in het Frans.</div>
+        <div class="meta"><span class="pill">±1–1,5 sprint</span><span class="pill">meetbaar zonder Trengo</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>De assistent leest mee in de bestaande Gmail-inbox en doet bij elke mail drie dingen: herkennen (order/retour/vraag/klacht/spoed), de feiten erbij zoeken (orderstatus, track &amp; trace, beleid) en een conceptantwoord klaarzetten in de taal van de klant en de toon van de eigen templates. Spoed gaat direct naar Wouts WhatsApp. In één klap meetbaar — volume, onderwerpen, responstijd — precies waarvoor Wout aan Trengo dacht, zonder tool-switch.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Meeleesrechten op de inbox (leest alleen; versturen blijft mensenwerk)</li>
+            <li>De bestaande Gmail-templates + akkoord op toon</li>
+            <li>Het bedrijfsgeheugen uit thema 3 voor de feiten en het beleid</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1–1,5 sprint. Veilig opgebouwd: eerst labelen + meten, dan concepten, pas daarna zelf versturen voor één veilige categorie (bv. alleen track &amp; trace-vragen).</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Vier binnengekomen mails. Klik erop — de assistent labelt, haalt de feiten erbij en zet een concept klaar in de juiste taal. Let op de Franse mail en het spoedgeval.</p>
+            <div class="t2d2">
+              <div class="inbox">
+                <div class="ih">Inbox — vanochtend</div>
+                <div class="mailitem act" id="mi-m1" onclick="t2d2Open('m1')">
+                  <div class="mfrom"><span class="mdot"></span>Fam. Jansen</div>
+                  <div class="msub">Wanneer komt mijn Aurora?</div>
+                </div>
+                <div class="mailitem" id="mi-m2" onclick="t2d2Open('m2')">
+                  <div class="mfrom"><span class="mdot"></span>C. Dubois <span class="langtag fr">FR</span></div>
+                  <div class="msub">Livraison demain en Belgique ?</div>
+                </div>
+                <div class="mailitem" id="mi-m3" onclick="t2d2Open('m3')">
+                  <div class="mfrom"><span class="mdot"></span>R. Peeters</div>
+                  <div class="msub">Product KAPOT aangekomen!!</div>
+                </div>
+                <div class="mailitem" id="mi-m4" onclick="t2d2Open('m4')">
+                  <div class="mfrom"><span class="mdot"></span>S. El&nbsp;Amrani</div>
+                  <div class="msub">Pakketbrievenbus retourneren</div>
+                </div>
+              </div>
+              <div class="mailview" id="t2d2-view">
+                <div class="empty">← Kies een mail om te zien wat de assistent ervan maakt</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TREDE 3 — chatbot ===== -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De chatbot op eigen data</h4>
+        <div class="oneliner">Tidio krijgt een brein: avond- en weekendvragen beantwoord op het koopmoment.</div>
+        <div class="meta"><span class="pill">±1 sprint</span><span class="pill">24/7, meertalig</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Tidio draait al op beide sites; we geven de chat een brein op de productspecs, verzend- en retourregels en de FAQ van beide merken, meertalig. Zo worden de avond- en weekendvragen ("past dit op mijn muur?", "is dit morgen echt in huis?") beantwoord op het moment dat de klant staat te kopen — en koopklare vragen worden doorgezet naar het team.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Het bedrijfsgeheugen uit thema 3 (productspecs, beleid, FAQ)</li>
+            <li>Koppeling met de bestaande Tidio-chat</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Stel een vraag zoals een klant 's avonds zou doen — ook in het Frans. De bot antwoordt uit de kennisbank, met bron. Eén vraag is koopklaar en wordt doorgezet.</p>
+            <div class="chatwin">
+              <div class="chathead"><span class="g"></span>PakketPanda &amp; ASH · chat <small>24/7 · ook nu online</small></div>
+              <div class="chatbody" id="t2d3-body">
+                <div class="bub bot">Hoi! Vraag maar raak — over maten, levertijd of retour. Ook 's avonds. 🐼🔥</div>
+              </div>
+              <div class="chatq" id="t2d3-q">
+                <button class="qq" onclick="t2d3Ask('q1',this)">Past de Classic XXL op een smalle muur?</button>
+                <button class="qq" onclick="t2d3Ask('q2',this)">Is de Solaris morgen in huis?</button>
+                <button class="qq" onclick="t2d3Ask('q3',this)"><span class="langtag fr">FR</span> Livré demain en Belgique&nbsp;?</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TREDE 4 — balie + telefonist ===== -->
+    <div class="tread" data-lvl="ren" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Rennen</span>
+        <h4>Marktplaats-balie + telefoonassistent</h4>
+        <div class="oneliner">Alle berichten in één stroom — en 's avonds neemt de telefoon zichzelf op.</div>
+        <div class="meta"><span class="pill">±2 sprints</span><span class="pill">bewust als laatste</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>De Bol- en Amazon-berichten komen mee in dezelfde stroom als mail en WhatsApp — één balie in plaats van vier losse borden. En als het bedrijfsgeheugen staat en de mail-assistent bewezen goed antwoordt, kan dezelfde kennis buiten openingstijden de telefoon opnemen: standaardvragen beantwoorden, terugbelverzoeken inplannen, de rest doorzetten. Elk gemist telefoontje is nu gemiste omzet. Bewust als laatste — eerst bewijzen op mail.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Koppeling met de Bol- en Amazon-berichtencentra</li>
+            <li>Chatterbox voor de stem (desnoods een stemkloon van het bedrijf)</li>
+            <li>Een bewezen mail-assistent en een gevuld bedrijfsgeheugen als fundament</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>Telefonist ±2 sprints.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Zo ziet het eruit</span>
+            <p class="dhint">Links: alle kanalen in één balie. Rechts: een gesprek dat de telefoonassistent 's avonds zelf afhandelt.</p>
+            <div class="t2d4">
+              <div class="balie">
+                <div class="bh">Eén balie — alle kanalen door elkaar</div>
+                <div class="balieitem"><span class="chan mail">Mail</span><div class="bt"><b>Levertijd Aurora?</b><small>Fam. Jansen · concept klaar</small></div></div>
+                <div class="balieitem"><span class="chan bol">Bol</span><div class="bt"><b>"Is de Classic XXL leverbaar in wit?"</b><small>Bol-bericht · concept klaar</small></div></div>
+                <div class="balieitem"><span class="chan wa">WhatsApp</span><div class="bt"><b>"Retour vuurschaal, hoe?"</b><small>+31 6 · concept klaar</small></div></div>
+                <div class="balieitem"><span class="chan amz">Amazon</span><div class="bt"><b>"Waar blijft mijn pakket?"</b><small>Amazon-bericht · 's nachts al beantwoord ✓</small></div></div>
+              </div>
+              <div class="phone">
+                <div class="phh"><span class="liv"></span>Telefoonassistent · 21:40 · buiten openingstijden</div>
+                <div class="turn klant"><b>Klant</b>"Goedenavond, ik wil een Solaris bestellen — is die morgen in huis als ik nu bestel?"</div>
+                <div class="turn ai"><b>Assistent</b>"Goedenavond! Ja — besteld vóór 21:00 is 'ie morgen in huis. U belt net na de grens, dus dan wordt het overmorgen. Zal ik u morgenochtend laten terugbellen om het af te ronden?"</div>
+                <div class="turn klant"><b>Klant</b>"Ja graag, na tienen."</div>
+                <div class="phact">✓ Terugbelverzoek ingepland — morgen na 10:00 · onderwerp: bestelling Solaris · genoteerd in het overzicht</div>
+              </div>
+            </div>
+            <div class="d-note"><b>Waarom als laatste:</b> de telefonist gebruikt exact dezelfde kennisbank als de mail-assistent en de chatbot. Pas als die twee bewezen goed antwoorden, mag de kennis ook de telefoon opnemen — dan weet je zeker dat wat 'ie zegt klopt.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="note"><b>Wat is een sprint?</b> Eén weekend bouwen, zo'n 8–16 uur. De gesprekkenluisteraar staat er in een halve sprint, de mail-assistent groeit in treden mee — eerst meelezen en meten, dan concepten, pas daarna zelf versturen.</div>
+
+  <footer>Thema 2 van 7 · gebouwd voor Wout · illustratieve voorbeelden, echte opzet · werkt volledig offline · Gmail, Tidio, VoIPZeker en WhatsApp blijven exact zoals ze zijn</footer>
+</div>
+
+<script>
+function toggle(card){
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.tread.open').forEach(t=>{
+    t.classList.remove('open');
+    t.querySelector('.more').textContent='Bekijk detail ▾';
+  });
+  if(!wasOpen){
+    card.classList.add('open');
+    card.querySelector('.more').textContent='Verberg detail ▴';
+  }
+}
+
+/* ---- hero animatie ---- */
+let animTimers=[];
+function playAnim(){
+  animTimers.forEach(clearTimeout); animTimers=[];
+  const nowSteps=document.querySelectorAll('#now-steps .step');
+  const autos=document.querySelectorAll('#autos .auto');
+  const step1=document.getElementById('next-step1');
+  const teller=document.getElementById('teller');
+  const mid=document.getElementById('mid');
+  nowSteps.forEach(s=>s.classList.remove('on'));
+  autos.forEach(a=>a.classList.remove('on'));
+  step1.classList.remove('on'); teller.classList.remove('on'); mid.classList.remove('play');
+  document.querySelectorAll('#teller .bar').forEach(b=>b.style.width='0');
+  let t=300;
+  nowSteps.forEach(s=>{animTimers.push(setTimeout(()=>s.classList.add('on'),t)); t+=550;});
+  animTimers.push(setTimeout(()=>mid.classList.add('play'),t)); t+=500;
+  animTimers.push(setTimeout(()=>step1.classList.add('on'),t)); t+=550;
+  autos.forEach(a=>{animTimers.push(setTimeout(()=>a.classList.add('on'),t)); t+=350;});
+  animTimers.push(setTimeout(()=>{
+    teller.classList.add('on');
+    document.querySelectorAll('#teller .bar').forEach(b=>b.style.width=b.dataset.w);
+  },t+250));
+}
+
+/* ============ demo 1 — gesprekkenluisteraar ============ */
+const T2D1={
+  r1:{tr:[['Klant','"Ik heb gisteren een Aurora besteld — wanneer wordt die geleverd?"'],['Medewerker','"Voor 21:00 besteld is morgen in huis; u zit in NL dus dat lukt."'],['Klant','"Top, en kan ik nog een beschermhoes meebestellen?"']],
+      onderwerp:'Levertijd + bijbestelling Aurora',vraag:'Wanneer wordt de Aurora geleverd, en kan er een hoes bij?',afspraak:'Toegezegd: levering morgen. Hoes nagestuurd als bestellink.'},
+  r2:{tr:[['Klant','"De vuurschaal bevalt toch niet, hij is te groot voor mijn terras."'],['Medewerker','"Geen probleem, u kunt hem binnen 14 dagen retourneren."'],['Klant','"En krijg ik dan alles terug?"']],
+      onderwerp:'Retour Solaris (te groot)',vraag:'Kan de vuurschaal retour en wordt alles terugbetaald?',afspraak:'Retourlabel toegestuurd; terugbetaling na ontvangst en controle.'},
+  r3:{tr:[['Klant','"Past de Classic XXL op een muurtje van 30 cm breed?"'],['Medewerker','"De Classic is 34 cm — nét te breed. De Easyfit XL wel."'],['Klant','"Ah, dan neem ik die. Bedankt!"']],
+      onderwerp:'Maatadvies pakketbrievenbus',vraag:'Past de Classic XXL op een smalle muur van 30 cm?',afspraak:'Geadviseerd: Easyfit XL i.p.v. Classic; klant koos die.'}
+};
+function t2d1Pick(k){
+  ['r1','r2','r3'].forEach((id,i)=>document.getElementById('rec'+(i+1)).classList.toggle('act',id===k));
+  const d=T2D1[k];
+  let tr='<div class="th">Transcript — automatisch uitgeschreven</div>';
+  d.tr.forEach(l=>tr+='<div class="line"><b>'+l[0]+':</b> '+l[1]+'</div>');
+  document.getElementById('t2d1-tr').innerHTML=tr;
+  document.getElementById('t2d1-sum').innerHTML=
+    '<div class="th">Samenvatting</div>'+
+    '<div class="sumrow"><span>Onderwerp</span>'+d.onderwerp+'</div>'+
+    '<div class="sumrow"><span>Vraag</span>'+d.vraag+'</div>'+
+    '<div class="sumrow"><span>Gemaakte afspraak</span>'+d.afspraak+'</div>';
+}
+
+/* ============ demo 2 — mail-assistent ============ */
+const T2D2={
+  m1:{from:'Fam. Jansen',lang:'',label:'order',lblcls:'order',
+    facts:'<span>Order</span> 9142 · Aurora cortenstaal<br><span>Status</span> verwerkt, verzending vandaag<br><span>Track &amp; trace</span> 3SPPND0483…NL',
+    concept:'Beste familie Jansen,<br>Bedankt voor uw bestelling! Uw Aurora is vandaag verzonden en wordt morgen bezorgd. Volgen kan met deze track &amp; trace: 3SPPND0483…NL. Veel plezier van de warmte!<br>Hartelijke groet, team ASH',cl:'Concept — Nederlands, toon "warm"'},
+  m2:{from:'C. Dubois',lang:'fr',label:'vraag',lblcls:'vraag',
+    facts:'<span>Order</span> nog geen — pre-sales<br><span>Vraag</span> levering morgen in België?<br><span>Beleid</span> voor 21:00 = +1 werkdag NL, +2 BE',
+    concept:'Bonjour Madame Dubois,<br>Merci pour votre message ! Pour la Belgique, une commande passée avant 21h est livrée sous 2 jours ouvrables. Souhaitez-vous que je vous réserve un exemplaire&nbsp;? Bien à vous, l\'équipe PakketPanda.',cl:'Concept — Frans, in de taal van de klant'},
+  m3:{from:'R. Peeters',lang:'',label:'spoed',lblcls:'spoed',spoed:true,
+    body:'"Ik open de doos en de plancha zit vol krassen. Belachelijk voor dit bedrag. Ik wil dit NU opgelost hebben."'},
+  m4:{from:'S. El Amrani',lang:'',label:'retour',lblcls:'retour',
+    facts:'<span>Order</span> 8877 · Classic XXL<br><span>Ontvangen</span> 5 dagen geleden — binnen 14 dagen<br><span>Beleid</span> herroeping toegestaan, retourlabel',
+    concept:'Beste heer El Amrani,<br>Bedankt voor uw bericht. Uw herroeping valt binnen de 14 dagen, dus dat is geen probleem. In de bijlage vindt u het retourlabel; na ontvangst en controle storten we het bedrag binnen 5 werkdagen terug.<br>Met vriendelijke groet, team PakketPanda',cl:'Concept — Nederlands, toon "zakelijk-vriendelijk"'}
+};
+function t2d2Open(k){
+  ['m1','m2','m3','m4'].forEach(id=>document.getElementById('mi-'+id).classList.toggle('act',id===k));
+  const d=T2D2[k];
+  const v=document.getElementById('t2d2-view');
+  let langtag=d.lang==='fr'?'<span class="langtag fr">FR</span>':'';
+  if(d.spoed){
+    v.innerHTML='<div class="mvhead"><span class="lblchip spoed">Spoed</span> '+langtag+'<span style="font-size:12px;color:var(--muted)">van '+d.from+'</span></div>'+
+      '<div class="spoedbox"><b>Geen concept — dit gaat direct door.</b><br>'+d.body+'<br><br>→ De assistent herkent boosheid + schade en zet dit <b>meteen door naar Wouts WhatsApp</b>. Geen automatisch antwoord bij een boze klant: dit hoort een mens te doen, snel.</div>';
+    return;
+  }
+  v.innerHTML='<div class="mvhead"><span class="lblchip '+d.lblcls+'">'+d.label+'</span> '+langtag+'<span style="font-size:12px;color:var(--muted)">van '+d.from+'</span></div>'+
+    '<div class="mvlabelrow">De assistent haalde de feiten erbij:</div>'+
+    '<div class="mvfacts">'+d.facts+'</div>'+
+    '<div class="mvconcept"><div class="cl">'+d.cl+'</div>'+d.concept+'</div>'+
+    '<button class="btn-ok" onclick="this.classList.add(\'done\');this.textContent=\'✓ Verzonden\'">Goedkeuren &amp; verzenden</button>';
+}
+
+/* ============ demo 3 — chatbot ============ */
+const T2D3={
+  q1:{u:'Past de Classic XXL op een smalle muur?',b:'De Classic XXL is 34 cm breed en past op elke muur vanaf ±35 cm. Montagemateriaal en een boorsjabloon zitten erbij.',src:'bron: productspec Classic XXL'},
+  q2:{u:'Is de Solaris morgen in huis?',b:'Ja — besteld vóór 21:00 wordt de Solaris in Nederland de volgende werkdag bezorgd, rechtstreeks uit voorraad.',src:'bron: verzendbeleid ASH'},
+  q3:{u:'Livré demain en Belgique ?',b:'Commandé avant 21h, la livraison en Belgique se fait sous 2 jours ouvrables. Le produit est en stock.',src:'source : politique d\'expédition',esc:'→ Koopklare vraag in het Frans herkend — doorgezet naar het team voor directe opvolging.'}
+};
+function t2d3Ask(k,btn){
+  btn.disabled=true;
+  const d=T2D3[k];
+  const body=document.getElementById('t2d3-body');
+  body.insertAdjacentHTML('beforeend','<div class="bub user">'+d.u+'</div>');
+  setTimeout(()=>{
+    body.insertAdjacentHTML('beforeend','<div class="bub bot">'+d.b+'<span class="src">'+d.src+'</span></div>');
+    if(d.esc) body.insertAdjacentHTML('beforeend','<div class="bub esc">'+d.esc+'</div>');
+    body.scrollTop=body.scrollHeight;
+  },420);
+  body.scrollTop=body.scrollHeight;
+}
+
+window.addEventListener('load',()=>{
+  setTimeout(playAnim,250);
+  t2d1Pick('r1');
+  t2d2Open('m1');
+});
+</script>
+</body>
+</html>
