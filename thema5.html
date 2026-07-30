@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thema 5 — Sturing &amp; signalen · PakketPanda &amp; ASH</title>
+<style>
+:root{
+  --bg:#f3f0ea; --card:#ffffff; --header:#17181a;
+  --text:#22242a; --muted:#6f737b; --ondark:#f7f5f1;
+  --panda:#1c1e21; --steel:#4a4f57; --ember:#e2611b; --corten:#9a4a26;
+  --pos:#c9520f; --up:#2e7d43; --risk:#a33d22; --warn:#8a5416;
+  --kruip:#26282c; --loop:#9a4a26; --ren:#e2611b;
+  --gap:16px; --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:var(--gap)}
+.demo-banner{background:#fdf2e6;border:1px solid #f0d4b2;color:var(--warn);border-radius:var(--radius);padding:8px 16px;font-size:13px;margin-bottom:var(--gap)}
+
+header.top{background:radial-gradient(circle at 90% 130%,rgba(226,97,27,.30),transparent 52%),radial-gradient(circle at 72% 160%,rgba(154,74,38,.22),transparent 45%),var(--header);color:var(--ondark);padding:20px 24px;border-radius:var(--radius);margin-bottom:var(--gap);position:relative;overflow:hidden;border-bottom:3px solid var(--ember)}
+.crumb{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#9aa0a8;font-weight:600;margin-bottom:6px}
+header.top h1{font-size:24px;font-weight:800;line-height:1.25;letter-spacing:-.3px}
+header.top .sub{font-size:14px;color:#a9aeb6;margin-top:6px;max-width:760px}
+.duomark{position:absolute;top:20px;right:22px;display:flex;align-items:center;gap:9px;opacity:.92}
+.duomark .x{color:#7a7f87;font-size:13px;font-weight:600}
+.themes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.theme-chip{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.16);color:#a9aeb6;background:rgba(255,255,255,.05);white-space:nowrap}
+.theme-chip.active{background:var(--ember);border-color:var(--ember);color:#fff;font-weight:600}
+a.theme-chip{text-decoration:none;color:#a9aeb6;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+a.theme-chip:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.42);color:#fff}
+
+.systems{background:var(--card);border-radius:var(--radius);padding:14px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);margin-bottom:var(--gap);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.systems .lock{flex:none;width:34px;height:34px;border-radius:9px;background:#eceef0;display:flex;align-items:center;justify-content:center}
+.systems .txt{font-size:13.5px;min-width:220px;flex:1}
+.systems .txt b{font-weight:650}
+.sysbadges{display:flex;gap:8px;flex-wrap:wrap}
+.sysbadge{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:8px;background:#f0f1f3;border:1px solid #e2e4e8;color:#3c4046;white-space:nowrap}
+
+.vs-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:6px 4px 10px}
+.vs-head h2{font-size:17px;font-weight:750}
+.vs-head .hint{font-size:12.5px;color:var(--muted)}
+.replay{font-size:12.5px;font-weight:600;color:var(--pos);background:none;border:1px solid var(--ember);border-radius:99px;padding:4px 14px;cursor:pointer}
+.replay:hover{background:var(--ember);color:#fff}
+.vs{display:grid;grid-template-columns:1fr 108px 1fr;gap:0;align-items:stretch;margin-bottom:var(--gap)}
+.pane{background:var(--card);border-radius:var(--radius);padding:18px 20px 20px;box-shadow:0 1px 3px rgba(28,22,14,.08);position:relative;overflow:hidden}
+.pane.now{border-top:4px solid var(--steel)}
+.pane.next{border-top:4px solid var(--ember)}
+.pane .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:4px}
+.pane.now .tag{background:#eceef0;color:var(--steel)}
+.pane.next .tag{background:#fbe9dc;color:var(--pos)}
+.pane h3{font-size:15.5px;font-weight:750;margin-bottom:2px}
+.pane .sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 10px;border-radius:8px;opacity:.35;transform:translateX(-6px);transition:opacity .5s ease,transform .5s ease,background .3s}
+.step.on{opacity:1;transform:none}
+.step .n{flex:none;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pane.now .step .n{background:#eceef0;color:#3d4148}
+.pane.next .step .n{background:#fbe9dc;color:var(--pos)}
+.step .b{font-size:13.5px}
+.step .b b{font-weight:650}
+.step .b .risk{display:inline-block;font-size:11px;font-weight:600;color:var(--risk);background:#f7e7e0;border-radius:99px;padding:1px 9px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.connector{width:2px;height:14px;background:#e6e3dd;margin-left:22px}
+.autos{margin:10px 0 0 38px;display:flex;flex-direction:column;gap:6px}
+.auto{font-size:13px;color:#3f3a35;display:flex;gap:8px;align-items:flex-start;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease}
+.auto.on{opacity:1;transform:none}
+.auto .chk{flex:none;width:17px;height:17px;border-radius:50%;background:var(--ember);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px;font-weight:700;box-shadow:0 0 7px rgba(226,97,27,.45)}
+.auto .who{color:var(--muted);font-size:11.5px}
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.mid .count{font-size:22px;font-weight:800;line-height:1.05;white-space:nowrap;text-align:center}
+.mid .count .from{color:var(--steel)}
+.mid .count .to{color:var(--pos)}
+.mid .arrow{font-size:22px;color:var(--ember);text-shadow:0 0 10px rgba(226,97,27,.35)}
+@keyframes pulse{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.mid.play .arrow{animation:pulse 1s ease infinite}
+.mid .lbl{font-size:11px;color:var(--muted);text-align:center;line-height:1.3}
+.paylines{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed #e6e3dd}
+.pay{font-size:12.5px}
+.pay .v{font-size:19px;font-weight:800}
+.pane.now .pay .v{color:#3f444b}
+.pane.next .pay .v{color:var(--pos)}
+.pay .k{color:var(--muted)}
+.teller{margin-top:16px;background:#fbf2e9;border:1px solid #efd9c2;border-radius:8px;padding:12px 14px;opacity:0;transform:translateY(6px);transition:opacity .5s ease .1s,transform .5s ease .1s}
+.teller.on{opacity:1;transform:none}
+.teller .t{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--pos);margin-bottom:8px}
+.tellerrow{display:flex;align-items:center;gap:10px;font-size:12.5px;margin-bottom:6px}
+.tellerrow:last-child{margin-bottom:0}
+.tellerrow .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--corten),var(--ember));flex:none;transition:width .8s ease}
+.tellerrow.dim .bar{background:#ddb28d}
+.tellerrow .cnt{font-weight:700;flex:none;width:30px;text-align:right}
+.teller .insight{font-size:12.5px;color:#4a3f34;margin-top:9px;border-top:1px dashed #ecd3ba;padding-top:8px}
+.teller .insight b{font-weight:650}
+
+.ladder-head{margin:26px 4px 4px}
+.ladder-head h2{font-size:17px;font-weight:750}
+.ladder-head p{font-size:13.5px;color:var(--muted);max-width:820px;margin-top:3px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);align-items:end;margin-top:14px;margin-bottom:var(--gap)}
+.tread{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(28,22,14,.08);cursor:pointer;border:2px solid transparent;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden;display:flex;flex-direction:column}
+.tread:hover{transform:translateY(-3px);box-shadow:0 4px 14px rgba(28,22,14,.12)}
+.tread.open{border-color:currentColor}
+.tread.open:hover{transform:none}
+.tread .bar{height:5px}
+.tread[data-lvl="kruip"]{color:var(--kruip)} .tread[data-lvl="kruip"] .bar{background:var(--kruip)}
+.tread[data-lvl="loop"]{color:var(--loop)} .tread[data-lvl="loop"] .bar{background:var(--loop)}
+.tread[data-lvl="ren"]{color:var(--ren)} .tread[data-lvl="ren"] .bar{background:linear-gradient(90deg,var(--corten),var(--ember))}
+.tread .inner{padding:14px 16px 16px;color:var(--text)}
+.lvl{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;padding:2px 9px;border-radius:99px;margin-bottom:8px;color:#fff}
+.tread[data-lvl="kruip"] .lvl{background:var(--kruip)}
+.tread[data-lvl="loop"] .lvl{background:var(--loop)}
+.tread[data-lvl="ren"] .lvl{background:var(--ren)}
+.tread h4{font-size:14.5px;font-weight:750;line-height:1.3;margin-bottom:4px}
+.tread .oneliner{font-size:12.5px;color:var(--muted)}
+.tread .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pill{font-size:11px;font-weight:600;background:#f2f0ec;border-radius:99px;padding:2px 9px;color:#55585f;white-space:nowrap}
+.tread .more{font-size:11.5px;font-weight:600;margin-top:10px;color:currentColor}
+.tread .detail{display:none;border-top:1px solid #efece6;margin-top:12px;padding-top:12px;color:var(--text);cursor:auto}
+.tread.open .detail{display:block}
+.detail h5{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.detail h5:first-child{margin-top:0}
+.detail p,.detail li{font-size:12.5px}
+.detail ul{list-style:none}
+.detail li{padding-left:16px;position:relative;margin-bottom:3px}
+.detail li:before{content:"›";position:absolute;left:2px;color:currentColor;font-weight:700}
+@media(min-width:861px){
+  .ladder .tread:nth-child(1){margin-top:96px}
+  .ladder .tread:nth-child(2){margin-top:64px}
+  .ladder .tread:nth-child(3){margin-top:32px}
+  .ladder .tread:nth-child(4){margin-top:0}
+  .ladder{align-items:start}
+}
+.ladder .tread.open{grid-column:1 / -1}
+@media(min-width:861px){.ladder .tread.open{margin-top:0}}
+
+.demo{margin-top:14px;background:#f8f6f1;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px;cursor:auto}
+.demo-tag{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#fff;background:var(--panda);padding:4px 12px;border-radius:99px;margin-bottom:11px}
+.demo-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 6px rgba(226,97,27,.8);animation:blink 1.6s ease infinite}
+@keyframes blink{50%{opacity:.35}}
+.demo .dhint{font-size:12px;color:var(--muted);margin:-6px 0 10px}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.btn-go{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--corten),var(--ember));border:none;border-radius:8px;padding:9px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(226,97,27,.3);font-family:inherit}
+.btn-go:hover{filter:brightness(1.08)}
+.readonly{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--steel);background:#eceef0;border:1px solid #dfe2e6;border-radius:99px;padding:3px 10px;margin-bottom:10px}
+
+/* demo1 — dashboard */
+.dashtog{display:inline-flex;background:#eceae3;border-radius:99px;padding:3px;margin:0 0 11px 8px}
+.dashtog button{font-size:12px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:99px;padding:5px 13px;cursor:pointer;font-family:inherit}
+.dashtog button.act{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(28,22,14,.18)}
+.dashgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.mcard{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:11px 13px}
+.mcard .mk{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.mcard .mv{font-size:22px;font-weight:800;line-height:1}
+.mcard .msub{font-size:11px;color:var(--muted);margin-top:3px}
+.delta{display:inline-block;font-size:11px;font-weight:800;border-radius:99px;padding:1px 8px;margin-top:7px}
+.delta.up{background:#e5f2e9;color:var(--up)}
+.delta.down{background:#f7e0d6;color:var(--risk)}
+.chanbars{margin-top:4px}
+.cb{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:4px}
+.cb .cbl{flex:none;width:74px;color:#3f3a35}
+.cb .cbt{flex:1;background:#f0eee8;border-radius:5px;height:9px;overflow:hidden}
+.cb .cbf{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--corten),var(--ember))}
+.cb .cbv{flex:none;width:26px;text-align:right;font-weight:700}
+.warncard{border-left:3px solid var(--ember)}
+
+/* demo2 — signalen */
+.sigbtns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.push{background:#fff;border:1px solid #e7e2d8;border-radius:12px;padding:10px 13px;box-shadow:0 4px 14px rgba(28,22,14,.1);margin-bottom:9px;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.push.show{opacity:1;transform:none}
+.push .ph{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:800;margin-bottom:5px}
+.push .appic{flex:none;width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,var(--corten),var(--ember));display:flex;align-items:center;justify-content:center}
+.push .ph .tijd{margin-left:auto;font-weight:600}
+.push .pb{font-size:12.5px;line-height:1.5}
+.sig-quiet{font-size:12px;color:var(--up);font-weight:600;background:#e5f2e9;border-radius:8px;padding:9px 12px}
+
+/* demo3 — maandag-samenvatting */
+.summ{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:13px 15px}
+.summ .sh{font-size:13px;font-weight:800;margin-bottom:8px}
+.summ p{font-size:12.5px;line-height:1.6;margin-bottom:8px}
+.summ .lead{color:#3f3a35}
+.tagline{display:inline-block;font-size:10.5px;font-weight:700;border-radius:99px;padding:1px 9px;margin-right:4px}
+.tagline.good{background:#e5f2e9;color:var(--up)}
+.tagline.watch{background:#fbe9dc;color:var(--pos)}
+.backlog{margin-top:6px;border-top:1px dashed #e6e3dd;padding-top:9px}
+.bki{display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0}
+.bki .st{flex:none;font-size:9.5px;font-weight:700;border-radius:99px;padding:1px 8px}
+.bki .st.ok{background:#eef0f2;color:var(--steel)}
+.bki .st.old{background:#f7e0d6;color:var(--risk)}
+
+/* demo4 — voorspellend */
+.scbtns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.scbtn{font-size:12px;font-weight:650;border:1.5px solid #e2ddd2;background:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;font-family:inherit;text-align:left;line-height:1.3}
+.scbtn.act{border-color:var(--ember);box-shadow:0 2px 10px rgba(226,97,27,.16)}
+.scout{background:#fff;border:1px solid #e7e2d8;border-radius:9px;padding:13px 14px}
+.scout .big{font-size:20px;font-weight:800;margin-bottom:3px}
+.scout .big.bad{color:var(--risk)}.scout .big.good{color:var(--up)}
+.scout .exp{font-size:12.5px;line-height:1.55;color:#3f3a35}
+
+.d-note{font-size:11.5px;color:var(--muted);margin-top:11px;border-top:1px dashed #e0dbd0;padding-top:9px}
+.d-note b{color:var(--text);font-weight:650}
+.note{background:var(--card);border-radius:var(--radius);padding:13px 18px;box-shadow:0 1px 3px rgba(28,22,14,.08);font-size:13px;color:var(--muted);margin-bottom:var(--gap);border-left:3px solid var(--ember)}
+.note b{color:var(--text);font-weight:650}
+footer{color:var(--muted);font-size:12px;padding:4px 4px 22px}
+
+@media(max-width:860px){
+  .vs{grid-template-columns:1fr}
+  .mid{flex-direction:row;padding:10px 0;gap:12px}
+  .mid .arrow{transform:rotate(90deg)}
+  .ladder{grid-template-columns:1fr}
+  header.top h1{font-size:20px}
+}
+@media(max-width:560px){ .duomark{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="demo-banner"><b>Schetsversie</b> — alle cijfers zijn illustratief. Het echte dashboard leest ze automatisch uit Picqer, Mollie en Gmail; hier tonen we hoe het eruitziet en aanvoelt.</div>
+
+  <header class="top">
+    <div class="duomark" aria-hidden="true">
+      <svg width="26" height="24" viewBox="0 0 26 24">
+        <circle cx="6" cy="5" r="4" fill="#0e0f10"/><circle cx="20" cy="5" r="4" fill="#0e0f10"/>
+        <circle cx="13" cy="13" r="10" fill="#f7f5f1"/>
+        <ellipse cx="9" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(-15 9 12)"/>
+        <ellipse cx="17" cy="12" rx="2.6" ry="3.2" fill="#0e0f10" transform="rotate(15 17 12)"/>
+        <circle cx="13" cy="16.5" r="1.4" fill="#0e0f10"/>
+      </svg>
+      <span class="x">×</span>
+      <svg width="19" height="23" viewBox="0 0 20 24">
+        <path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#e2611b"/>
+        <path d="M10 22.6a3.4 3.4 0 0 0 3.4-3.4c0-2.1-1.9-3.1-3.4-5.2-1.5 2.1-3.4 3.1-3.4 5.2a3.4 3.4 0 0 0 3.4 3.4z" fill="#f7b26b"/>
+      </svg>
+    </div>
+    <div class="crumb">PakketPanda &amp; ASH Grill &amp; Heat · Thema 5 van 7</div>
+    <h1>Sturing &amp; signalen</h1>
+    <div class="sub">Het hele bedrijf op één scherm. De informatie bestaat al — verspreid over vijf systemen; wat ontbreekt is het overzicht. En voor wat niet kan wachten: het bericht komt naar jou.</div>
+    <div class="themes">
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%201%20visueel%20(bestelling%20tot%20deurmat).html">1 · Bestelling tot deurmat</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%202%20visueel%20(klantcontact).html">2 · Klantcontact</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%203%20visueel%20(bedrijfsgeheugen).html">3 · Bedrijfsgeheugen</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%204%20visueel%20(groei%20en%20merk).html">4 · Groei &amp; merk</a>
+      <span class="theme-chip active">5 · Sturing &amp; signalen</span>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%206%20visueel%20(geld%20marge%20en%20cashflow).html">6 · Geld, marge &amp; cashflow</a>
+      <a class="theme-chip" href="Wout%20%E2%80%93%20Thema%207%20visueel%20(leveranciers%20en%20contracten).html">7 · Leveranciers &amp; contracten</a>
+    </div>
+  </header>
+
+  <div class="systems">
+    <div class="lock" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#23252a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <div class="txt"><b>Alle koppelingen zijn alleen-lezen.</b> Het dashboard kijkt naar de systemen — het kan niets wijzigen, bestellen of versturen.</div>
+    <div class="sysbadges">
+      <span class="sysbadge">Picqer</span>
+      <span class="sysbadge">Mollie</span>
+      <span class="sysbadge">Gmail</span>
+      <span class="sysbadge">ClickUp</span>
+    </div>
+  </div>
+
+  <div class="vs-head">
+    <h2>Hoe staat het bedrijf er vandaag voor?</h2>
+    <span class="hint">nu: vijf systemen openen · straks: één blik bij de koffie</span>
+    <button class="replay" onclick="playAnim()">↺ Speel opnieuw af</button>
+  </div>
+
+  <section class="vs">
+    <div class="pane now">
+      <span class="tag">Status quo</span>
+      <h3>Vijf systemen, geen totaalbeeld</h3>
+      <div class="sub">Wie het geheel wil zien, klikt een uur lang.</div>
+      <div class="steps" id="now-steps">
+        <div class="step"><span class="n">1</span><div class="b"><b>Orders</b> in Picqer en Channable, <b>omzet</b> in Mollie, <b>service</b> in Gmail.</div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">2</span><div class="b"><b>Planning</b> in ClickUp ("kan nog veel beter"), de rest in losse sheets.</div></div>
+        <div class="connector"></div>
+        <div class="step"><span class="n">3</span><div class="b"><b>Elk systeem klopt op zich</b> — maar niemand ziet het geheel. <span class="risk">geen overzicht</span></div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">5</div><div class="k">systemen om te openen</div></div>
+        <div class="pay"><div class="v">~1 uur</div><div class="k">doorklikken voor één beeld</div></div>
+        <div class="pay"><div class="v">reactief</div><div class="k">problemen zie je pas als ze al gebeurd zijn</div></div>
+      </div>
+    </div>
+
+    <div class="mid" id="mid">
+      <div class="count"><span class="from">5</span> <span style="color:var(--muted);font-size:16px">→</span> <span class="to">1</span></div>
+      <div class="arrow">➜</div>
+      <div class="lbl">van vijf systemen<br>naar één pagina,<br>elke ochtend vers</div>
+    </div>
+
+    <div class="pane next">
+      <span class="tag">Straks</span>
+      <h3>Eén pagina — en de rest komt naar jou</h3>
+      <div class="sub">De hartslag van vandaag, met een seintje als er iets is.</div>
+      <div class="steps">
+        <div class="step" id="next-step1"><span class="n">1</span><div class="b"><b>Eén dashboard</b>, elke ochtend vers, op telefoon en laptop. Lezen alleen.</div></div>
+      </div>
+      <div class="autos" id="autos">
+        <div class="auto"><span class="chk">✓</span><div>Orders &amp; omzet per merk en kanaal — vs vorige week én vorig jaar <span class="who">· dashboard</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Servicedruk, nazendingen, containers onderweg — in één blik <span class="who">· dashboard</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div><b>Signaal bij wat niet kan wachten</b> — voorraadgat, mailpiek, slechte review <span class="who">· signalen</span></div></div>
+        <div class="auto"><span class="chk">✓</span><div>Maandagochtend een leesbaar weekverslag in gewone taal <span class="who">· samenvatting</span></div></div>
+      </div>
+      <div class="paylines">
+        <div class="pay"><div class="v">1 blik</div><div class="k">om 08:15 bij de koffie</div></div>
+        <div class="pay"><div class="v">proactief</div><div class="k">bijsturen vóór het een probleem is</div></div>
+        <div class="pay"><div class="v">gedeeld</div><div class="k">iedereen die meebeslist ziet hetzelfde</div></div>
+      </div>
+      <div class="teller" id="teller">
+        <div class="t">Bovendien: elk ander thema wordt hier zichtbaar</div>
+        <div class="tellerrow"><span class="cnt">✓</span><span class="bar" style="width:0" data-w="60%"></span><span>effect van de mail-assistent (thema 2)</span></div>
+        <div class="tellerrow dim"><span class="cnt">✓</span><span class="bar" style="width:0" data-w="45%"></span><span>reviewgroei (thema 4) &amp; nazend-daling (thema 1)</span></div>
+        <div class="insight"><b>Waarom dit het sluitstuk is:</b> hier lees je af of het hele traject oplevert wat het belooft. Sturen op wat er ís in plaats van op wat je toevallig opvalt.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ladder-head">
+    <h2>De ladder — klein beginnen, opbouwen wat werkt</h2>
+    <p>Van kruipen via lopen naar rennen. Alle koppelingen zijn alleen-lezen. <b>Klik op een trede</b> voor wat het doet, wat ervoor nodig is, de bouwtijd — én een klikbare mini-demo.</p>
+  </div>
+
+  <section class="ladder">
+
+    <!-- TREDE 1 — dashboard -->
+    <div class="tread" data-lvl="kruip" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Kruipen</span>
+        <h4>Het heartbeat-dashboard</h4>
+        <div class="oneliner">Eén pagina, elke ochtend vers: orders, omzet, servicedruk, containers.</div>
+        <div class="meta"><span class="pill">±1 sprint</span><span class="pill">lezen alleen</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Eén pagina met de hartslag van vandaag en deze week: bestellingen en omzet per merk en per kanaal (eigen shop, Bol, Amazon, Praxis, Brico), vergeleken met vorige week én dezelfde week vorig jaar — belangrijk bij seizoensproducten. Daaronder de operatie: mail- en telefoonvolume, nazendingen, containers onderweg. De cijfers komen automatisch uit de systemen die er al zijn.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Leesrechten (alleen lezen!) tot Picqer, Mollie en de Gmail-tellingen</li>
+            <li>Eén gesprek over wat Wout op dat ene scherm wíl zien</li>
+            <li>Een plek om het op te hangen: telefoon-bladwijzer of tablet aan de muur</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±1 sprint na de koppelingen. Er is al een klikbare demo (<code>Wout – Management dashboard demo.html</code>).</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <span class="readonly">🔒 lezen alleen — kan niets wijzigen</span>
+            <p class="dhint">Het dashboard van vandaag. Wissel de vergelijking tussen vorige week en vorig jaar — bij seizoensproducten vertelt dat een heel ander verhaal.</p>
+            <div class="dashtog">
+              <button class="act" id="dg-week" onclick="t5d1Cmp('week')">vs vorige week</button>
+              <button id="dg-year" onclick="t5d1Cmp('year')">vs vorig jaar</button>
+            </div>
+            <div class="dashgrid">
+              <div class="mcard">
+                <div class="mk">Orders vandaag</div>
+                <div class="mv">47</div>
+                <div class="msub">31 PakketPanda · 16 ASH</div>
+                <div class="delta up" id="d5-orders">▲ +9%</div>
+              </div>
+              <div class="mcard">
+                <div class="mk">Omzet vandaag</div>
+                <div class="mv">€9,4k</div>
+                <div class="msub">gem. orderwaarde €200</div>
+                <div class="delta up" id="d5-omzet">▲ +6%</div>
+              </div>
+              <div class="mcard">
+                <div class="mk">Omzet per kanaal</div>
+                <div class="chanbars">
+                  <div class="cb"><span class="cbl">Eigen shop</span><span class="cbt"><span class="cbf" style="width:100%"></span></span><span class="cbv">70%</span></div>
+                  <div class="cb"><span class="cbl">Bol</span><span class="cbt"><span class="cbf" style="width:26%"></span></span><span class="cbv">13%</span></div>
+                  <div class="cb"><span class="cbl">Amazon</span><span class="cbt"><span class="cbf" style="width:18%"></span></span><span class="cbv">9%</span></div>
+                  <div class="cb"><span class="cbl">Praxis/Brico</span><span class="cbt"><span class="cbf" style="width:16%"></span></span><span class="cbv">8%</span></div>
+                </div>
+              </div>
+              <div class="mcard">
+                <div class="mk">Servicedruk</div>
+                <div class="mv">61</div>
+                <div class="msub">mails · 14 telefoontjes · top: levertijd Aurora</div>
+                <div class="delta up" id="d5-serv">gem. reactie 40 min</div>
+              </div>
+              <div class="mcard">
+                <div class="mk">Nazendingen (maand)</div>
+                <div class="mv">34</div>
+                <div class="msub">top-oorzaak: sleutel Classic XXL</div>
+                <div class="delta down" id="d5-naz">▼ -12% na fix</div>
+              </div>
+              <div class="mcard warncard">
+                <div class="mk">Containers onderweg</div>
+                <div class="mv" style="font-size:15px">Solaris · ETA 4 aug ⚠</div>
+                <div class="msub">Aurora · ETA 22 aug · haalt het net</div>
+                <div class="delta down">Solaris krap bij dit tempo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 2 — signalen -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De signalen</h4>
+        <div class="oneliner">Voor wat niet kan wachten draaien we het om: het bericht komt naar jou.</div>
+        <div class="meta"><span class="pill">±0,5 sprint</span><span class="pill">geen bericht = alles draait</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Een dashboard werkt alleen als je ernaar kijkt. Dus voor de dingen die niet kunnen wachten draaien we het om: het bericht komt naar jou. Voorraad van een hardloper raakt op vóór de containeraankomst? Bericht. Mailvolume vandaag twee keer zo hoog (er is iets mis met een levering)? Bericht. Negatieve review? Bericht, met concept-reactie erbij. Geen bericht = alles draait.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>De drempels afspreken (wanneer is iets een signaal?)</li>
+            <li>Leunt op de data uit thema 1 (voorraad) en thema 4 (reviews)</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">Zo ziet een normale dag eruit — stil. Druk op de knop om een drukke dag te simuleren; alleen dán komen de signalen naar je toe.</p>
+            <div class="sigbtns">
+              <button class="btn-go" onclick="t5d2Sim()">Simuleer een drukke dag</button>
+            </div>
+            <div id="t5d2-quiet" class="sig-quiet">✓ Geen signalen — alles draait binnen de normale marges. Je hoeft niets te doen.</div>
+            <div id="t5d2-alerts" style="display:none">
+              <div class="push" id="sig1">
+                <div class="ph"><span class="appic"><svg width="9" height="11" viewBox="0 0 20 24"><path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#fff"/></svg></span>Voorraad <span class="tijd">07:12</span></div>
+                <div class="pb"><b>Solaris Ø81 raakt op vóór de container.</b> Leeg rond 28 juli, ETA 4 augustus → 7 dagen nee-verkoop in de piek. Bijbestellen of campagne opschuiven.</div>
+              </div>
+              <div class="push" id="sig2">
+                <div class="ph"><span class="appic"><svg width="9" height="11" viewBox="0 0 20 24"><path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#fff"/></svg></span>Mailpiek <span class="tijd">10:03</span></div>
+                <div class="pb"><b>Mailvolume vandaag 2× normaal.</b> Vooral over de Aurora-levering — mogelijk een vertraagde zending. Even checken bij de vervoerder.</div>
+              </div>
+              <div class="push" id="sig3">
+                <div class="ph"><span class="appic"><svg width="9" height="11" viewBox="0 0 20 24"><path d="M10 1c1.2 4.4 6 6.8 6 12a6 6 0 1 1-12 0c0-2.6 1.3-4.3 2.6-6 .7 1.6 2 2.4 2.4.6C9.4 5.6 9.3 3.4 10 1z" fill="#fff"/></svg></span>Review <span class="tijd">14:20</span></div>
+                <div class="pb"><b>Nieuwe 2-sterren review (ASH).</b> Over transportschade. Concept-reactie staat klaar (thema 4) — één klik en verzonden.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 3 — maandag-samenvatting -->
+    <div class="tread" data-lvl="loop" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Lopen</span>
+        <h4>De maandag-samenvatting</h4>
+        <div class="oneliner">Elke maandagochtend een leesbaar weekverslag — vijf minuten bij de koffie.</div>
+        <div class="meta"><span class="pill">±0,5 sprint</span><span class="pill">incl. ClickUp-backlog</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Elke maandagochtend een kort, leesbaar weekverslag in gewone taal: wat ging goed, wat viel op, wat verdient aandacht — inclusief de ClickUp-backlog ("deze drie projecten zijn al vier weken niet aangeraakt"). Vijf minuten lezen bij de koffie in plaats van een uur systemen doorklikken.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Koppeling met ClickUp voor de backlog</li>
+            <li>De dashboard-data uit trede 1</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>±0,5 sprint.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Zo ziet het eruit</span>
+            <p class="dhint">Het verslag zoals het maandagochtend in je mailbox valt.</p>
+            <div class="summ">
+              <div class="sh">📋 Weekverslag — maandag, week 29</div>
+              <p class="lead"><span class="tagline good">GING GOED</span> Omzet +8% t.o.v. vorige week, gedragen door ASH (zomerpiek). Bol liep 20% voor. Reactietijd klantenservice zakte naar 38 min.</p>
+              <p class="lead"><span class="tagline watch">LET OP</span> De Solaris haalt de containerdatum van 4 augustus niet bij dit tempo — beslissing nodig deze week. Mailvraag over levertijd Aurora blijft hoog (kandidaat voor een FAQ-regel).</p>
+              <div class="backlog">
+                <div class="bh" style="font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">ClickUp-backlog</div>
+                <div class="bki"><span class="st old">4 wkn stil</span> Productfoto's ASH vernieuwen</div>
+                <div class="bki"><span class="st old">5 wkn stil</span> Retourpagina herschrijven</div>
+                <div class="bki"><span class="st ok">deze week</span> Najaarscampagne pelletkachels plannen</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREDE 4 — voorspellend sturen -->
+    <div class="tread" data-lvl="ren" onclick="toggle(this)">
+      <div class="bar"></div>
+      <div class="inner">
+        <span class="lvl">Rennen</span>
+        <h4>Voorspellend sturen</h4>
+        <div class="oneliner">"Wat als" — schuif de campagne, bestel eerder, en zie het effect vooraf.</div>
+        <div class="meta"><span class="pill">later</span><span class="pill">van spiegel naar stuurwiel</span></div>
+        <div class="more">Bekijk detail ▾</div>
+        <div class="detail" onclick="event.stopPropagation()">
+          <h5>Wat het doet</h5>
+          <p>Seizoensprognoses en "wat als"-scenario's: schuif de oktobercampagne een week op, of bestel twee weken eerder bij — en zie wat dat doet. Het dashboard wordt van spiegel een stuurwiel. Zo neem je een beslissing om 08:15 bij de koffie, in plaats van over drie weken als het al gebeurd is.</p>
+          <h5>Wat ervoor nodig is</h5>
+          <ul>
+            <li>Een geaccepteerde prognosemethode</li>
+            <li>Historische data uit thema 1 (voorraad/verkoop) en thema 6 (geld)</li>
+          </ul>
+          <h5>Bouwtijd</h5>
+          <p>Later; het bouwt voort op de eerste drie treden.</p>
+
+          <div class="demo">
+            <span class="demo-tag"><span class="dot"></span>Probeer het zelf</span>
+            <p class="dhint">De Solaris dreigt de containerdatum niet te halen. Kies een scenario — zie meteen wat het kost of oplevert.</p>
+            <div class="scbtns">
+              <button class="scbtn act" id="sc-niets" onclick="t5d4Pick('niets')">Niets doen</button>
+              <button class="scbtn" id="sc-eerder" onclick="t5d4Pick('eerder')">2 weken eerder bijbestellen</button>
+              <button class="scbtn" id="sc-schuif" onclick="t5d4Pick('schuif')">Campagne week opschuiven</button>
+            </div>
+            <div class="scout" id="t5d4-out"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="note"><b>Wouts eigen wens, direct ingelost:</b> "meer meetbaar maken". Sneller bijsturen bij seizoenspieken, problemen zien als signaal in plaats van als brand, en een gedeeld beeld voor iedereen die meebeslist. En na een maand: schrappen wat niemand gebruikt — een dashboard hoort kleiner te worden, niet groter.</div>
+
+  <footer>Thema 5 van 7 · gebouwd voor Wout · illustratieve cijfers, echte opzet · werkt volledig offline · alle koppelingen zijn alleen-lezen — het dashboard wijzigt nooit iets</footer>
+</div>
+
+<script>
+function toggle(card){
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.tread.open').forEach(t=>{
+    t.classList.remove('open');
+    t.querySelector('.more').textContent='Bekijk detail ▾';
+  });
+  if(!wasOpen){
+    card.classList.add('open');
+    card.querySelector('.more').textContent='Verberg detail ▴';
+  }
+}
+
+let animTimers=[];
+function playAnim(){
+  animTimers.forEach(clearTimeout); animTimers=[];
+  const nowSteps=document.querySelectorAll('#now-steps .step');
+  const autos=document.querySelectorAll('#autos .auto');
+  const step1=document.getElementById('next-step1');
+  const teller=document.getElementById('teller');
+  const mid=document.getElementById('mid');
+  nowSteps.forEach(s=>s.classList.remove('on'));
+  autos.forEach(a=>a.classList.remove('on'));
+  step1.classList.remove('on'); teller.classList.remove('on'); mid.classList.remove('play');
+  document.querySelectorAll('#teller .bar').forEach(b=>b.style.width='0');
+  let t=300;
+  nowSteps.forEach(s=>{animTimers.push(setTimeout(()=>s.classList.add('on'),t)); t+=550;});
+  animTimers.push(setTimeout(()=>mid.classList.add('play'),t)); t+=500;
+  animTimers.push(setTimeout(()=>step1.classList.add('on'),t)); t+=550;
+  autos.forEach(a=>{animTimers.push(setTimeout(()=>a.classList.add('on'),t)); t+=350;});
+  animTimers.push(setTimeout(()=>{
+    teller.classList.add('on');
+    document.querySelectorAll('#teller .bar').forEach(b=>b.style.width=b.dataset.w);
+  },t+250));
+}
+
+/* ============ demo 1 — dashboard vergelijking ============ */
+function t5d1Cmp(mode){
+  document.getElementById('dg-week').classList.toggle('act',mode==='week');
+  document.getElementById('dg-year').classList.toggle('act',mode==='year');
+  const o=document.getElementById('d5-orders'), om=document.getElementById('d5-omzet');
+  if(mode==='week'){
+    o.textContent='▲ +9%'; o.className='delta up';
+    om.textContent='▲ +6%'; om.className='delta up';
+  }else{
+    o.textContent='▲ +14% vs vorig jaar'; o.className='delta up';
+    om.textContent='▲ +18% vs vorig jaar'; om.className='delta up';
+  }
+}
+
+/* ============ demo 2 — signalen ============ */
+let t5d2Timers=[];
+function t5d2Sim(){
+  t5d2Timers.forEach(clearTimeout); t5d2Timers=[];
+  document.getElementById('t5d2-quiet').style.display='none';
+  const box=document.getElementById('t5d2-alerts');
+  box.style.display='block';
+  ['sig1','sig2','sig3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('show');
+    t5d2Timers.push(setTimeout(()=>el.classList.add('show'),200+i*550));
+  });
+}
+
+/* ============ demo 4 — voorspellend ============ */
+const T5D4={
+  niets:{cls:'bad',big:'~€5.300 gemiste omzet',exp:'De voorraad raakt 7 dagen vóór de container op. Bij ~4 verkopen/dag × €189 loop je in die week ongeveer €5.300 mis — precies in de piekmaand waarin iedereen een vuurschaal wil.'},
+  eerder:{cls:'good',big:'€0 gemist · ~€150 extra voorraadkosten',exp:'Twee weken eerder bijbestellen dicht het gat volledig. De enige kosten zijn wat extra voorraadruimte en iets eerder betalen — verwaarloosbaar tegenover €5.300 gemiste omzet.'},
+  schuif:{cls:'good',big:'€0 gemist · campagne 1 week later',exp:'De najaarscampagne een week opschuiven laat de piek samenvallen met de containeraankomst. Geen nee-verkoop, geen extra inkoop — alleen de timing verzet. Werkt als je de campagne flexibel kunt plannen.'}
+};
+function t5d4Pick(k){
+  ['niets','eerder','schuif'].forEach(id=>document.getElementById('sc-'+id).classList.toggle('act',id===k));
+  const d=T5D4[k];
+  document.getElementById('t5d4-out').innerHTML='<div class="big '+d.cls+'">'+d.big+'</div><div class="exp">'+d.exp+'</div>';
+}
+
+window.addEventListener('load',()=>{
+  setTimeout(playAnim,250);
+  t5d1Cmp('week');
+  t5d4Pick('niets');
+});
+</script>
+</body>
+</html>
